@@ -1,4 +1,4 @@
-import { Resolvers } from '~/SchemaGraphql/types.generated'
+import { MessageTextCreate, Resolvers } from '~/SchemaGraphql/types.generated'
 import messageService from './message.service'
 import { isAuth } from '~/auth/auth.guard'
 import { GraphQLError } from 'graphql'
@@ -24,7 +24,8 @@ export const messageResolvers: Resolvers = {
 
     getMessageBoxForMe: async (_, __, context) => {
       const { id } = isAuth(context)
-      return messageService.getMessageBoxsByUserId(id.toString())
+      const messageBox = await messageService.getMessageBoxsByUserId(id.toString())
+      return messageBox
     }
   },
 
@@ -35,6 +36,7 @@ export const messageResolvers: Resolvers = {
       return await messageService.createMessageBox({
         ownerId: id.toString(),
         name: input.name,
+        location: input.location,
         id: '',
         dateCreated: new Date()
       })
@@ -53,6 +55,13 @@ export const messageResolvers: Resolvers = {
       }
 
       return await messageService.createMessageBoxMember(input)
+    },
+
+    sendMessage: async (_, { messageTextCreate }, context) => {
+      const { id } = isAuth(context)
+      const message = await messageService.createMessageText(id.toString(), messageTextCreate as MessageTextCreate)
+
+      return message
     }
   },
 
@@ -65,6 +74,17 @@ export const messageResolvers: Resolvers = {
   MessageBoxMember: {
     user: async (parent) => {
       return parent.user ? parent.user : await userService.getUserById(parent.userId)
+    }
+  },
+
+  MessageTextBox: {
+    sender: async ({ senderId, sender }) => {
+      return sender ? sender : userService.getUserById(senderId)
+    },
+
+    reply: async ({ reply, replyId }) => {
+      if (!replyId) return null
+      return reply ? reply : messageService.getMessageTextById(replyId)
     }
   }
 }

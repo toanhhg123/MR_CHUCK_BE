@@ -32,10 +32,19 @@ model User {
   MessageTextBox   MessageTextBox[]
 }
 
+enum EMessageBoxStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
+}
+
 model MessageBox {
   id                String             @id @default(uuid())
   ownerId           String
   name              String
+  process           Int                @default(0)
+  location          String
+  status            EMessageBoxStatus  @default(NEW)
   dateCreated       DateTime           @default(now())
   owner             User               @relation(fields: [ownerId], references: [id])
   messageBoxMembers MessageBoxMember[]
@@ -59,12 +68,14 @@ model MessageBoxMember {
 }
 
 model MessageTextBox {
-  id           String     @id @default(uuid())
+  id           String           @id @default(uuid())
   senderId     String
   replyId      String?
   message      String
   messageBoxId String
-  dateCreated  DateTime   @default(now())
-  sender       User?      @relation(fields: [replyId], references: [id])
-  messageBox   MessageBox @relation(fields: [messageBoxId], references: [id])
+  dateCreated  DateTime         @default(now())
+  reply        MessageTextBox?  @relation("Replies", fields: [replyId], references: [id])
+  sender       User             @relation(fields: [senderId], references: [id])
+  messageBox   MessageBox       @relation(fields: [messageBoxId], references: [id])
+  replies      MessageTextBox[] @relation("Replies")
 }

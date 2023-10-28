@@ -15,8 +15,8 @@ export const userResolvers: Resolvers = {
   },
 
   Mutation: {
-    createUser: async (_, { userRequestCreate }, context) => {
-      isAdmin(context)
+    createUser: async (_, { userRequestCreate }) => {
+      // isAdmin(context)
 
       const user = await userService.createUser(userRequestCreate)
       return user.id

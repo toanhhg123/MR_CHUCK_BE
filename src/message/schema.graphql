@@ -8,12 +8,22 @@ enum EMemberInMessageBox {
 
 input MessageBoxCreate {
   name: String!
+  location: String!
+}
+
+enum EMessageBoxStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
 }
 
 type MessageBox {
   id: ID!
   ownerId: String!
   name: String!
+  process: Float
+  location: String!
+  status: EMessageBoxStatus
   dateCreated: Date!
   owner: User
   messageBoxMembers: [MessageBoxMember]
@@ -35,23 +45,46 @@ type MessageBoxMember {
   messageBox: MessageBox
 }
 
-type MessageTextBox {
-  id: String
-  senderId: String
+input MessageTextCreate {
+  message: String!
   replyId: String
-  message: String
-  messageBoxId: String
-  dateCreated: Date
+  messageBoxId: String!
+}
+
+type MessageTextBox {
+  id: ID!
+  senderId: String!
+  replyId: String
+  message: String!
+  messageBoxId: String!
+  dateCreated: Date!
+
   sender: User
+  reply: MessageTextBox
   messageBox: MessageBox
+  replies: [MessageTextBox]
+}
+
+type MessageTextBoxResponse {
+  totalPage: Int!
+  pageIndex: Int!
+  messages: [MessageTextBox]
+}
+
+input MessageTextBoxQuery {
+  totalPage: Int
+  pageIndex: Int
+  messageBoxId: String!
 }
 
 type Query {
   getMessage(id: String!): MessageBox
   getMessageBoxForMe: [MessageBox]
+  getMessageByMessageBoxId(messageTextBoxQuery: MessageTextBoxQuery!): MessageTextBoxResponse
 }
 
 type Mutation {
   createMessageBox(input: MessageBoxCreate!): MessageBox
   createMessageBoxMember(input: MessageBoxMemberCreate!): MessageBoxMember
+  sendMessage(messageTextCreate: MessageTextCreate!): MessageTextBox
 }
