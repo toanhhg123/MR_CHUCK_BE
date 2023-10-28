@@ -94,7 +94,6 @@ export type MessageTextBox = {
 export type MessageTextBoxQuery = {
   messageBoxId: Scalars['String']['input'];
   pageIndex?: InputMaybe<Scalars['Int']['input']>;
-  totalPage?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type MessageTextBoxResponse = {

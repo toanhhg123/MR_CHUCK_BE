@@ -2,6 +2,7 @@ import {
   MessageBox,
   MessageBoxMemberCreate,
   MessageTextBoxQuery,
+  MessageTextBoxResponse,
   MessageTextCreate
 } from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
@@ -82,16 +83,33 @@ export class MessageService {
     })
   }
 
-  async queryMessageByMessageBoxId({ totalPage, pageIndex, messageBoxId }: MessageTextBoxQuery) {
+  async queryMessageByMessageBoxId({ pageIndex, messageBoxId }: MessageTextBoxQuery) {
     pageIndex = pageIndex || 1
 
     const limit = 50
 
-    return prisma.messageTextBox.findFirst({
+    const messages = prisma.messageTextBox.findMany({
       where: { messageBoxId },
       skip: (pageIndex - 1) * limit,
-      take: limit
+      take: limit,
+      orderBy: {
+        dateCreated: 'asc'
+      },
+      include: {
+        replies: true,
+        messageBox: true
+      }
     })
+
+    const count = prisma.messageTextBox.count({
+      where: { messageBoxId }
+    })
+
+    return {
+      totalPage: Math.ceil((await count) / limit),
+      pageIndex,
+      messages: await messages
+    } as MessageTextBoxResponse
   }
 
   async getMessageTextById(id: string) {

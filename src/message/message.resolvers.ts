@@ -26,6 +26,11 @@ export const messageResolvers: Resolvers = {
       const { id } = isAuth(context)
       const messageBox = await messageService.getMessageBoxsByUserId(id.toString())
       return messageBox
+    },
+
+    getMessageByMessageBoxId: async (_, { messageTextBoxQuery }, context) => {
+      isAuth(context)
+      return await messageService.queryMessageByMessageBoxId(messageTextBoxQuery)
     }
   },
 

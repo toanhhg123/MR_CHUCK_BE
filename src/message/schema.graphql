@@ -72,7 +72,6 @@ type MessageTextBoxResponse {
 }
 
 input MessageTextBoxQuery {
-  totalPage: Int
   pageIndex: Int
   messageBoxId: String!
 }
