@@ -6,7 +6,7 @@ export type UserPayloadToken = Omit<User, 'password' | 'roleRef'>
 
 export const signToken = ({ id, username, email, role }: User) => {
   return jwt.sign({ id, username, email, role }, SECRET_JWT, {
-    expiresIn: '1d'
+    expiresIn: '30d'
   })
 }
 
