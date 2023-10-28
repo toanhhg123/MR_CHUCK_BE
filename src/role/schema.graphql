@@ -1,0 +1,18 @@
+enum ERole {
+  ADMIN
+  USER
+}
+
+type Role {
+  id: ID!
+  name: ERole!
+  users: [User]
+}
+
+type Query {
+  getRoles: [Role]
+}
+
+type Mutation {
+  createRole(name: ERole!): ERole
+}

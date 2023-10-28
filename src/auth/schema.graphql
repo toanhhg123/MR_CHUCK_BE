@@ -1,0 +1,17 @@
+input AuthRequest {
+  email: String!
+  password: String!
+}
+
+type AuthResponse {
+  accessToken: String!
+  refreshTokens: String!
+}
+
+type Query {
+  getMe: User
+}
+
+type Mutation {
+  login(authRequest: AuthRequest!): AuthResponse!
+}

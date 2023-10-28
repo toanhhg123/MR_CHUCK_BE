@@ -1,0 +1,30 @@
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  password: String!
+  role: ERole!
+  roleRef: Role
+}
+
+input UserRequestLogin {
+  username: String!
+  password: String!
+}
+
+input UserRequestCreate {
+  username: String!
+  password: String!
+  email: String!
+  role: ERole!
+}
+
+type Query {
+  getUsers: [User]
+  getUser(id: ID!): User
+}
+
+type Mutation {
+  createUser(userRequestCreate: UserRequestCreate!): ID
+  deleteUser(id: ID!): ID
+}
