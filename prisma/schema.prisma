@@ -26,11 +26,45 @@ model User {
   email    String @unique()
   password String
   role     ERole
+
+  messageBoxs      MessageBox[]
+  MessageBoxMember MessageBoxMember[]
+  MessageTextBox   MessageTextBox[]
 }
 
 model MessageBox {
-  id      String @id @default(uuid())
-  ownerId String
+  id                String             @id @default(uuid())
+  ownerId           String
+  name              String
+  dateCreated       DateTime           @default(now())
+  owner             User               @relation(fields: [ownerId], references: [id])
+  messageBoxMembers MessageBoxMember[]
+  messageTexts      MessageTextBox[]
+}
 
-  dateCreated DateTime @default(now())
+enum EMemberInMessageBox {
+  MEMBER
+  OWNER
+  DEPUTY
+}
+
+model MessageBoxMember {
+  id           String              @id @default(uuid())
+  userId       String
+  type         EMemberInMessageBox @default(MEMBER)
+  messageBoxId String
+  dateCreated  DateTime            @default(now())
+  user         User                @relation(fields: [userId], references: [id])
+  messageBox   MessageBox          @relation(fields: [messageBoxId], references: [id])
+}
+
+model MessageTextBox {
+  id           String     @id @default(uuid())
+  senderId     String
+  replyId      String?
+  message      String
+  messageBoxId String
+  dateCreated  DateTime   @default(now())
+  sender       User?      @relation(fields: [replyId], references: [id])
+  messageBox   MessageBox @relation(fields: [messageBoxId], references: [id])
 }

@@ -8,6 +8,7 @@ const server = async () => {
 
   app.use(cors())
   app.use(express.json())
+
   app.use(
     express.urlencoded({
       extended: true
@@ -23,7 +24,6 @@ const server = async () => {
     expressMiddleware(serverApollo, {
       context: async ({ req }) => {
         const token = req.headers.authorization
-
         return {
           token
         }

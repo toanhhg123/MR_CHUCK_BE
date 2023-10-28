@@ -1,0 +1,57 @@
+scalar Date
+
+enum EMemberInMessageBox {
+  MEMBER
+  OWNER
+  DEPUTY
+}
+
+input MessageBoxCreate {
+  name: String!
+}
+
+type MessageBox {
+  id: ID!
+  ownerId: String!
+  name: String!
+  dateCreated: Date!
+  owner: User
+  messageBoxMembers: [MessageBoxMember]
+  messageTexts: [MessageTextBox]
+}
+
+input MessageBoxMemberCreate {
+  userId: String!
+  messageBoxId: String!
+}
+
+type MessageBoxMember {
+  id: ID
+  userId: String!
+  type: EMemberInMessageBox
+  messageBoxId: String!
+  dateCreated: Date
+  user: User
+  messageBox: MessageBox
+}
+
+type MessageTextBox {
+  id: String
+  senderId: String
+  replyId: String
+  message: String
+  messageBoxId: String
+  dateCreated: Date
+  sender: User
+  messageBox: MessageBox
+}
+
+type Query {
+  getMessage(id: String!): MessageBox
+  getMessageBoxForMe: [MessageBox]
+}
+
+type Mutation {
+  createMessageBox(input: MessageBoxCreate!): MessageBox
+  createMessageBoxMember(input: MessageBoxMemberCreate!): MessageBoxMember
+}
