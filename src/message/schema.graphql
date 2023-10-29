@@ -78,7 +78,7 @@ input MessageTextBoxQuery {
 
 type Query {
   getMessage(id: String!): MessageBox
-  getMessageBoxForMe: [MessageBox]
+  getMessagesBoxForMe: [MessageBox]
   getMessageByMessageBoxId(messageTextBoxQuery: MessageTextBoxQuery!): MessageTextBoxResponse
 }
 

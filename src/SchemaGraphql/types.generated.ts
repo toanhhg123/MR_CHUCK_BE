@@ -159,8 +159,8 @@ export type Query = {
   __typename?: 'Query';
   getMe?: Maybe<User>;
   getMessage?: Maybe<MessageBox>;
-  getMessageBoxForMe?: Maybe<Array<Maybe<MessageBox>>>;
   getMessageByMessageBoxId?: Maybe<MessageTextBoxResponse>;
+  getMessagesBoxForMe?: Maybe<Array<Maybe<MessageBox>>>;
   getRoles?: Maybe<Array<Maybe<Role>>>;
   getUser?: Maybe<User>;
   getUsers?: Maybe<Array<Maybe<User>>>;
@@ -403,8 +403,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getMe?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   getMessage?: Resolver<Maybe<ResolversTypes['MessageBox']>, ParentType, ContextType, RequireFields<QuerygetMessageArgs, 'id'>>;
-  getMessageBoxForMe?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageBox']>>>, ParentType, ContextType>;
   getMessageByMessageBoxId?: Resolver<Maybe<ResolversTypes['MessageTextBoxResponse']>, ParentType, ContextType, RequireFields<QuerygetMessageByMessageBoxIdArgs, 'messageTextBoxQuery'>>;
+  getMessagesBoxForMe?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageBox']>>>, ParentType, ContextType>;
   getRoles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Role']>>>, ParentType, ContextType>;
   getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerygetUserArgs, 'id'>>;
   getUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;

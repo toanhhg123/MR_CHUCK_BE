@@ -22,7 +22,7 @@ export const messageResolvers: Resolvers = {
       return messageBox
     },
 
-    getMessageBoxForMe: async (_, __, context) => {
+    getMessagesBoxForMe: async (_, __, context) => {
       const { id } = isAuth(context)
       const messageBox = await messageService.getMessageBoxsByUserId(id.toString())
       return messageBox
