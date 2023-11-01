@@ -45,6 +45,7 @@ type Case {
   userCreated: User
   rooms: [Room]
   userCases: [UserCase]
+  messageCases: [MessageCase]
 }
 
 type UserCase {

@@ -12,6 +12,10 @@ export class UserService {
     })
   }
 
+  getByEmail(email: string) {
+    return prisma.user.findFirst({ where: { email } })
+  }
+
   getUsers() {
     return prisma.user.findMany()
   }

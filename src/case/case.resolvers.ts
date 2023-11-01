@@ -2,6 +2,7 @@ import { CaseInput, Resolvers } from '~/SchemaGraphql/types.generated'
 import { isAuth } from '~/auth/auth.guard'
 import caseService from './case.service'
 import roomService from '~/room/room.service'
+import messageCaseService from '~/messageCase/messageCase.service'
 
 const caseResolvers: Resolvers = {
   Query: {
@@ -50,6 +51,9 @@ const caseResolvers: Resolvers = {
   Case: {
     rooms: ({ rooms, id }) => {
       return rooms ? rooms : roomService.getRoomByCaseId(id.toString())
+    },
+    messageCases: ({ messageCases, id }) => {
+      return messageCases ? messageCases : messageCaseService.getByCaseId(id.toString())
     }
   }
 }

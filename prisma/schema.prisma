@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,33 +7,132 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Role {
+  id   String @id @default(uuid())
+  name ERole  @unique
+}
+
+model User {
+  id          String        @id @default(uuid())
+  username    String
+  email       String        @unique
+  password    String
+  role        ERole
+  age         Int?
+  avatar      String?
+  gender      String?
+  Case        Case[]
+  Message     Message[]
+  UserCase    UserCase[]
+  UserRoom    UserRoom[]
+  MessageCase MessageCase[]
+}
+
+model Location {
+  id   String @id @default(uuid())
+  name String @unique
+  Case Case[]
+}
+
+model Case {
+  id                      String              @id @default(uuid())
+  name                    String
+  number                  Int
+  description             String?
+  locationId              String?
+  subDepartment           String?
+  attorneyName            String?
+  attorneyFirmName        String?
+  neutralSummary          String?
+  additionalInfo          String?
+  complaintFormUploadPath String?
+  sjqSubmissionDate       DateTime?           @default(now())
+  sjqApprovalStatus       ESjqApprovalStatus? @default(APPROVED)
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @default(now())
+  userCreatedId           String
+  paidVersion             EPAD_VERSION        @default(FREE)
+  type                    ECASE_TYPE?         @default(TORTS)
+  status                  ECaseStatus         @default(NEW)
+  location                Location?           @relation(fields: [locationId], references: [id])
+  userCreated             User                @relation(fields: [userCreatedId], references: [id])
+  rooms                   Room[]
+  userCases               UserCase[]
+  messageCases            MessageCase[]
+}
+
+model UserCase {
+  id        String   @id @default(uuid())
+  userId    String
+  caseId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  case      Case     @relation(fields: [caseId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model MessageCase {
+  id          String        @id @default(uuid())
+  senderId    String
+  replyId     String?
+  message     String
+  case        Case          @relation(fields: [caseId], references: [id])
+  caseId      String
+  dateCreated DateTime      @default(now())
+  reply       MessageCase?  @relation("Replies", fields: [replyId], references: [id])
+  sender      User          @relation(fields: [senderId], references: [id])
+  replies     MessageCase[] @relation("Replies")
+}
+
+model Room {
+  id        String     @id @default(uuid())
+  type      ETypeRoom  @default(GROUP)
+  caseId    String
+  name      String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  Message   Message[]
+  case      Case       @relation(fields: [caseId], references: [id])
+  userRooms UserRoom[]
+}
+
+model UserRoom {
+  id         String        @id @default(uuid())
+  roomId     String
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @default(now())
+  userId     String
+  memberType EMemberInRoom @default(MEMBER)
+  room       Room          @relation(fields: [roomId], references: [id])
+  user       User          @relation(fields: [userId], references: [id])
+}
+
+model Message {
+  id          String    @id @default(uuid())
+  senderId    String
+  replyId     String?
+  message     String
+  roomId      String
+  dateCreated DateTime  @default(now())
+  reply       Message?  @relation("Replies", fields: [replyId], references: [id])
+  replies     Message[] @relation("Replies")
+  room        Room      @relation(fields: [roomId], references: [id])
+  sender      User      @relation(fields: [senderId], references: [id])
+}
+
+model avatar_images {
+  avatar_id String  @id
+  gender    String?
+  age_range String?
+  etnicity  String?
+  image_url String?
+}
+
 enum ERole {
   USER
   ADMIN
 }
 
-model Role {
-  id   String @id @default(uuid())
-  name ERole  @unique()
-}
-
-model User {
-  id       String  @id @default(uuid())
-  username String
-  email    String  @unique()
-  password String
-  role     ERole
-  age      Int?
-  gender   String?
-  avatar   String?
-
-  Case     Case[]
-  UserRoom UserRoom[]
-  Message  Message[]
-  UserCase UserCase[]
-}
-
-// ==================================CASE===========================
 enum ECaseStatus {
   NEW
   IN_PROGRESS
@@ -58,66 +154,9 @@ enum ESjqApprovalStatus {
   PENDING
 }
 
-model Location {
-  id   String @id @default(uuid())
-  name String @unique
-  Case Case[]
-}
-
-model Case {
-  id                      String              @id @default(uuid())
-  name                    String
-  status                  ECaseStatus         @default(NEW)
-  number                  Int
-  type                    ECASE_TYPE?         @default(TORTS)
-  paidVersion             EPAD_VERSION        @default(FREE)
-  description             String?
-  locationId              String?
-  subDepartment           String?
-  attorneyName            String?
-  attorneyFirmName        String?
-  neutralSummary          String?
-  complaintFormUploadPath String?
-  additionalInfo          String?
-  userCreatedId           String
-  userCreated             User                @relation(fields: [userCreatedId], references: [id])
-  sjqSubmissionDate       DateTime?           @default(now())
-  sjqApprovalStatus       ESjqApprovalStatus? @default(APPROVED)
-  location                Location?           @relation(fields: [locationId], references: [id])
-
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @default(now())
-  rooms     Room[]
-  userCases UserCase[]
-}
-
-model UserCase {
-  id        String   @id @default(uuid())
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  caseId    String
-  case      Case     @relation(fields: [caseId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-}
-
-// =======================================ROOM===============================
-
 enum ETypeRoom {
   BOX
   GROUP
-}
-
-model Room {
-  id        String     @id @default(uuid())
-  name      String
-  caseId    String
-  type      ETypeRoom  @default(GROUP)
-  case      Case       @relation(fields: [caseId], references: [id])
-  userRooms UserRoom[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @default(now())
-  Message   Message[]
 }
 
 enum EMemberInRoom {
@@ -126,62 +165,14 @@ enum EMemberInRoom {
   DEPUTY
 }
 
-model UserRoom {
-  id         String        @id @default(uuid())
-  userId     String
-  user       User          @relation(fields: [userId], references: [id])
-  roomId     String
-  room       Room          @relation(fields: [roomId], references: [id])
-  memberType EMemberInRoom @default(MEMBER)
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @default(now())
-}
-
-model Message {
-  id          String    @id @default(uuid())
-  senderId    String
-  replyId     String?
-  message     String
-  roomId      String
-  room        Room      @relation(fields: [roomId], references: [id])
-  dateCreated DateTime  @default(now())
-  reply       Message?  @relation("Replies", fields: [replyId], references: [id])
-  sender      User      @relation(fields: [senderId], references: [id])
-  replies     Message[] @relation("Replies")
-}
-
 enum EMessageBoxStatus {
   NEW
   IN_PROGRESS
   CLOSED
 }
 
-// model MessageBox {
-//   id                String             @id @default(uuid())
-//   ownerId           String
-//   name              String
-//   process           Int                @default(0)
-//   location          String
-//   status            EMessageBoxStatus  @default(NEW)
-//   dateCreated       DateTime           @default(now())
-//   owner             User               @relation(fields: [ownerId], references: [id])
-//   messageBoxMembers MessageBoxMember[]
-//   messageTexts      MessageTextBox[]
-//   Message           Message[]
-// }
-
 enum EMemberInMessageBox {
   MEMBER
   OWNER
   DEPUTY
 }
-
-// model MessageBoxMember {
-//   id           String              @id @default(uuid())
-//   userId       String
-//   type         EMemberInMessageBox @default(MEMBER)
-//   messageBoxId String
-//   dateCreated  DateTime            @default(now())
-//   user         User                @relation(fields: [userId], references: [id])
-//   messageBox   MessageBox          @relation(fields: [messageBoxId], references: [id])
-// }

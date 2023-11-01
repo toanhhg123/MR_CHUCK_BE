@@ -20,6 +20,19 @@ export const authResolves: Resolvers = {
         accessToken: signToken(user),
         refreshTokens: ''
       }
+    },
+
+    register: async (_, { input: { email, password, username } }) => {
+      if (await userService.getByEmail(email)) throw new Error('email is exist !!')
+
+      await userService.createUser({ username, email, password, role: 'USER' })
+
+      const user = await authService.validateLoginWithGraph(email, password)
+
+      return {
+        accessToken: signToken(user),
+        refreshTokens: ''
+      }
     }
   }
 }

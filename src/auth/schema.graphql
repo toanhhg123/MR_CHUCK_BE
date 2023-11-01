@@ -3,6 +3,12 @@ input AuthRequest {
   password: String!
 }
 
+input AuthRegisterInput {
+  email: String!
+  password: String!
+  username: String!
+}
+
 type AuthResponse {
   accessToken: String!
   refreshTokens: String!
@@ -14,4 +20,5 @@ type Query {
 
 type Mutation {
   login(authRequest: AuthRequest!): AuthResponse!
+  register(input: AuthRegisterInput!): AuthResponse!
 }

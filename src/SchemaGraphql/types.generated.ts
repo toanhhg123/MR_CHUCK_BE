@@ -17,6 +17,12 @@ export type Scalars = {
   Date: { input: any; output: any; }
 };
 
+export type AuthRegisterInput = {
+  email: Scalars['String']['input'];
+  password: Scalars['String']['input'];
+  username: Scalars['String']['input'];
+};
+
 export type AuthRequest = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -39,6 +45,7 @@ export type Case = {
   id: Scalars['String']['output'];
   location?: Maybe<Location>;
   locationId?: Maybe<Scalars['String']['output']>;
+  messageCases?: Maybe<Array<Maybe<MessageCase>>>;
   name: Scalars['String']['output'];
   neutralSummary?: Maybe<Scalars['String']['output']>;
   number: Scalars['Int']['output'];
@@ -134,17 +141,39 @@ export type Message = {
   senderId: Scalars['String']['output'];
 };
 
+export type MessageCase = {
+  __typename?: 'MessageCase';
+  case?: Maybe<Case>;
+  caseId: Scalars['String']['output'];
+  dateCreated?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['ID']['output'];
+  message: Scalars['String']['output'];
+  replies?: Maybe<Array<Maybe<MessageCase>>>;
+  reply?: Maybe<MessageCase>;
+  replyId?: Maybe<Scalars['String']['output']>;
+  sender?: Maybe<User>;
+  senderId: Scalars['String']['output'];
+};
+
+export type MessageCaseInput = {
+  caseId: Scalars['String']['input'];
+  message: Scalars['String']['input'];
+  replyId?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   addUserToCase?: Maybe<Case>;
   addUsersToRoom?: Maybe<Scalars['Int']['output']>;
   createCase?: Maybe<Case>;
   createLocation?: Maybe<Location>;
+  createMessageCase?: Maybe<MessageCase>;
   createRole?: Maybe<ERole>;
   createRoom?: Maybe<Room>;
   createUser?: Maybe<Scalars['ID']['output']>;
   deleteUser?: Maybe<Scalars['ID']['output']>;
   login: AuthResponse;
+  register: AuthResponse;
 };
 
 
@@ -165,6 +194,11 @@ export type MutationcreateCaseArgs = {
 
 export type MutationcreateLocationArgs = {
   input: LocationInput;
+};
+
+
+export type MutationcreateMessageCaseArgs = {
+  input: MessageCaseInput;
 };
 
 
@@ -190,6 +224,11 @@ export type MutationdeleteUserArgs = {
 
 export type MutationloginArgs = {
   authRequest: AuthRequest;
+};
+
+
+export type MutationregisterArgs = {
+  input: AuthRegisterInput;
 };
 
 export type Query = {
@@ -374,8 +413,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  AuthRequest: AuthRequest;
+  AuthRegisterInput: AuthRegisterInput;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  AuthRequest: AuthRequest;
   AuthResponse: ResolverTypeWrapper<AuthResponse>;
   Case: ResolverTypeWrapper<Case>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
@@ -393,6 +433,8 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   LocationInput: LocationInput;
   Message: ResolverTypeWrapper<Message>;
+  MessageCase: ResolverTypeWrapper<MessageCase>;
+  MessageCaseInput: MessageCaseInput;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
@@ -409,8 +451,9 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  AuthRequest: AuthRequest;
+  AuthRegisterInput: AuthRegisterInput;
   String: Scalars['String']['output'];
+  AuthRequest: AuthRequest;
   AuthResponse: AuthResponse;
   Case: Case;
   Int: Scalars['Int']['output'];
@@ -421,6 +464,8 @@ export type ResolversParentTypes = {
   ID: Scalars['ID']['output'];
   LocationInput: LocationInput;
   Message: Message;
+  MessageCase: MessageCase;
+  MessageCaseInput: MessageCaseInput;
   Mutation: {};
   Query: {};
   Role: Role;
@@ -451,6 +496,7 @@ export type CaseResolvers<ContextType = any, ParentType extends ResolversParentT
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   location?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType>;
   locationId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  messageCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageCase']>>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   neutralSummary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -493,16 +539,32 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type MessageCaseResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageCase'] = ResolversParentTypes['MessageCase']> = {
+  case?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType>;
+  caseId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  dateCreated?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  replies?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageCase']>>>, ParentType, ContextType>;
+  reply?: Resolver<Maybe<ResolversTypes['MessageCase']>, ParentType, ContextType>;
+  replyId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sender?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  senderId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addUserToCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationaddUserToCaseArgs, 'input'>>;
   addUsersToRoom?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationaddUsersToRoomArgs, 'userRoomInput'>>;
   createCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationcreateCaseArgs, 'caseInput'>>;
   createLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<MutationcreateLocationArgs, 'input'>>;
+  createMessageCase?: Resolver<Maybe<ResolversTypes['MessageCase']>, ParentType, ContextType, RequireFields<MutationcreateMessageCaseArgs, 'input'>>;
   createRole?: Resolver<Maybe<ResolversTypes['ERole']>, ParentType, ContextType, RequireFields<MutationcreateRoleArgs, 'name'>>;
   createRoom?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<MutationcreateRoomArgs, 'input'>>;
   createUser?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationcreateUserArgs, 'userRequestCreate'>>;
   deleteUser?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationdeleteUserArgs, 'id'>>;
   login?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationloginArgs, 'authRequest'>>;
+  register?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationregisterArgs, 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -579,6 +641,7 @@ export type Resolvers<ContextType = any> = {
   Date?: GraphQLScalarType;
   Location?: LocationResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
+  MessageCase?: MessageCaseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;

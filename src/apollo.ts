@@ -7,6 +7,7 @@ import messageResolvers from './message/message.resolvers'
 import locationResolves from './location/location.resolvers'
 import caseResolvers from './case/case.resolvers'
 import roomResolvers from './room/room.resolvers'
+import messageCaseResolver from './messageCase/messageCase.resolvers'
 
 export type ApolloContext = {
   token?: string
@@ -21,7 +22,8 @@ const server = new ApolloServer<ApolloContext>({
     messageResolvers,
     locationResolves,
     caseResolvers,
-    roomResolvers
+    roomResolvers,
+    messageCaseResolver
   ],
   formatError: (formattedError) => {
     return formattedError
