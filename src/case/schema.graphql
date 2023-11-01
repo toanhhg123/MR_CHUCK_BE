@@ -90,4 +90,5 @@ type Query {
 type Mutation {
   createCase(caseInput: CaseInput!): Case
   addUserToCase(input: UserCaseInput!): Case
+  updateCase(caseId: String!, input: CaseInput!): Case
 }

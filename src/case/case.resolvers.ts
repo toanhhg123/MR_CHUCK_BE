@@ -34,6 +34,16 @@ const caseResolvers: Resolvers = {
       return caseCreated
     },
 
+    updateCase: async (_, { caseId, input }, context) => {
+      const { id } = isAuth(context)
+
+      if (!(await caseService.isOwnerCase(id.toString(), caseId))) {
+        throw new Error('user not owner')
+      }
+
+      return caseService.updateCase(caseId, input)
+    },
+
     addUserToCase: async (_, { input }, context) => {
       const { id } = isAuth(context)
 

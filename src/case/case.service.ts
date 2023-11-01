@@ -103,6 +103,11 @@ export class CaseService {
 
     return this.getCaseById(input.caseId)
   }
+
+  updateCase(caseId: string, input: CaseInput) {
+    input.sjqSubmissionDate = new Date(input.sjqSubmissionDate)
+    return CaseModel.update({ data: input, where: { id: caseId } })
+  }
 }
 
 export default new CaseService()

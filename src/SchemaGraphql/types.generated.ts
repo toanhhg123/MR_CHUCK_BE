@@ -174,6 +174,7 @@ export type Mutation = {
   deleteUser?: Maybe<Scalars['ID']['output']>;
   login: AuthResponse;
   register: AuthResponse;
+  updateCase?: Maybe<Case>;
 };
 
 
@@ -229,6 +230,12 @@ export type MutationloginArgs = {
 
 export type MutationregisterArgs = {
   input: AuthRegisterInput;
+};
+
+
+export type MutationupdateCaseArgs = {
+  caseId: Scalars['String']['input'];
+  input: CaseInput;
 };
 
 export type Query = {
@@ -565,6 +572,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteUser?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationdeleteUserArgs, 'id'>>;
   login?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationloginArgs, 'authRequest'>>;
   register?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationregisterArgs, 'input'>>;
+  updateCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationupdateCaseArgs, 'caseId' | 'input'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {

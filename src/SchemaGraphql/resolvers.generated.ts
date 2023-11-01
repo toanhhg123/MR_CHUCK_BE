@@ -17,6 +17,7 @@ import    { createUser as Mutation_createUser } from './user/resolvers/Mutation/
 import    { deleteUser as Mutation_deleteUser } from './user/resolvers/Mutation/deleteUser';
 import    { login as Mutation_login } from './auth/resolvers/Mutation/login';
 import    { register as Mutation_register } from './auth/resolvers/Mutation/register';
+import    { updateCase as Mutation_updateCase } from './case/resolvers/Mutation/updateCase';
 import    { getCaseById as Query_getCaseById } from './case/resolvers/Query/getCaseById';
 import    { getCases as Query_getCases } from './case/resolvers/Query/getCases';
 import    { getLocations as Query_getLocations } from './location/resolvers/Query/getLocations';
@@ -34,7 +35,7 @@ import    { UserCase } from './case/resolvers/UserCase';
 import    { UserRoom } from './room/resolvers/UserRoom';
     export const resolvers: Resolvers = {
       Query: { getCaseById: Query_getCaseById,getCases: Query_getCases,getLocations: Query_getLocations,getMe: Query_getMe,getMessageByRoomId: Query_getMessageByRoomId,getMyCases: Query_getMyCases,getRoles: Query_getRoles,getRoomsByCaseId: Query_getRoomsByCaseId,getUser: Query_getUser,getUsers: Query_getUsers },
-      Mutation: { addUserToCase: Mutation_addUserToCase,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register },
+      Mutation: { addUserToCase: Mutation_addUserToCase,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register,updateCase: Mutation_updateCase },
       
       AuthResponse: AuthResponse,
 Case: Case,
