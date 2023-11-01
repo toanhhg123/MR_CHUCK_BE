@@ -1,0 +1,56 @@
+scalar Date
+
+enum ETypeRoom {
+  BOX
+  GROUP
+}
+
+enum EMemberInRoom {
+  MEMBER
+  OWNER
+  DEPUTY
+}
+
+type UserRoom {
+  id: ID!
+  room: Room
+  roomId: String!
+  userId: String!
+  user: User!
+  memberType: EMemberInRoom!
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+type Room {
+  id: ID!
+  name: String!
+  caseId: String!
+  case: Case
+  type: ETypeRoom!
+  userRooms: [UserRoom]!
+
+  createdAt: Date
+  updatedAt: Date
+}
+
+input InputRoom {
+  name: String!
+  caseId: String!
+  type: ETypeRoom!
+}
+
+input UserRoomInput {
+  userIds: [String]!
+  roomId: String!
+}
+
+type Query {
+  getRoomsByCaseId(caseId: String!): [Room]
+}
+
+type Mutation {
+  createRoom(input: InputRoom!): Room
+  addUsersToRoom(userRoomInput: UserRoomInput!): Int
+}

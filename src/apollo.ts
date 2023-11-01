@@ -4,6 +4,9 @@ import roleResolvers from './role/role.resolvers'
 import userResolvers from './user/user.resolever'
 import authResolves from './auth/auth.resolvers'
 import messageResolvers from './message/message.resolvers'
+import locationResolves from './location/location.resolvers'
+import caseResolvers from './case/case.resolvers'
+import roomResolvers from './room/room.resolvers'
 
 export type ApolloContext = {
   token?: string
@@ -11,7 +14,15 @@ export type ApolloContext = {
 
 const server = new ApolloServer<ApolloContext>({
   typeDefs: typeDefs,
-  resolvers: [userResolvers, roleResolvers, authResolves, messageResolvers],
+  resolvers: [
+    userResolvers,
+    roleResolvers,
+    authResolves,
+    messageResolvers,
+    locationResolves,
+    caseResolvers,
+    roomResolvers
+  ],
   formatError: (formattedError) => {
     return formattedError
   }

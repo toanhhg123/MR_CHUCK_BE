@@ -4,6 +4,9 @@ type User {
   email: String!
   password: String!
   role: ERole!
+  age: Int
+  gender: String
+  avatar: String
   roleRef: Role
 }
 

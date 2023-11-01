@@ -1,0 +1,74 @@
+scalar Date
+
+enum EPAD_VERSION {
+  FREE
+  PAID
+}
+
+enum ECaseStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
+}
+
+enum ECASE_TYPE {
+  TORTS
+  MEDICAL_MALPRACTICE
+}
+
+enum ESjqApprovalStatus {
+  APPROVED
+  PENDING
+}
+
+type Case {
+  id: String!
+  name: String!
+  number: Int!
+  type: ECASE_TYPE
+  status: ECaseStatus!
+  paidVersion: EPAD_VERSION!
+  description: String
+  locationId: String
+  subDepartment: String
+  attorneyName: String
+  attorneyFirmName: String
+  neutralSummary: String
+  additionalInfo: String
+  complaintFormUploadPath: String
+  sjqSubmissionDate: Date
+  sjqApprovalStatus: ESjqApprovalStatus
+  userCreatedId: String!
+  userCreated: User
+  createdAt: Date
+  updatedAt: Date
+  location: Location
+  rooms: [Room]
+}
+
+input CaseInput {
+  name: String!
+  number: Int!
+  type: ECASE_TYPE
+  status: ECaseStatus!
+  paidVersion: EPAD_VERSION!
+  description: String
+  locationId: String
+  subDepartment: String
+  attorneyName: String
+  attorneyFirmName: String
+  complaintFormUploadPath: String
+  neutralSummary: String
+  additionalInfo: String
+  sjqSubmissionDate: Date
+  sjqApprovalStatus: ESjqApprovalStatus
+}
+
+type Query {
+  getCases: [Case]
+  getMyCases: [Case]
+}
+
+type Mutation {
+  createCase(caseInput: CaseInput!): Case
+}

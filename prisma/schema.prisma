@@ -21,15 +21,110 @@ model Role {
 }
 
 model User {
-  id       String @id @default(uuid())
+  id       String  @id @default(uuid())
   username String
-  email    String @unique()
+  email    String  @unique()
   password String
   role     ERole
+  age      Int?
+  gender   String?
+  avatar   String?
 
   messageBoxs      MessageBox[]
   MessageBoxMember MessageBoxMember[]
   MessageTextBox   MessageTextBox[]
+  Case             Case[]
+  UserRoom         UserRoom[]
+}
+
+// ==================================CASE===========================
+enum ECaseStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
+}
+
+enum EPAD_VERSION {
+  FREE
+  PAID
+}
+
+enum ECASE_TYPE {
+  TORTS
+  MEDICAL_MALPRACTICE
+}
+
+enum ESjqApprovalStatus {
+  APPROVED
+  PENDING
+}
+
+model Location {
+  id   String @id @default(uuid())
+  name String @unique
+  Case Case[]
+}
+
+model Case {
+  id                      String              @id @default(uuid())
+  name                    String
+  status                  ECaseStatus         @default(NEW)
+  number                  Int
+  type                    ECASE_TYPE?         @default(TORTS)
+  paidVersion             EPAD_VERSION        @default(FREE)
+  description             String?
+  locationId              String?
+  subDepartment           String?
+  attorneyName            String?
+  attorneyFirmName        String?
+  neutralSummary          String?
+  complaintFormUploadPath String?
+  additionalInfo          String?
+  userCreatedId           String
+  userCreated             User                @relation(fields: [userCreatedId], references: [id])
+  sjqSubmissionDate       DateTime?           @default(now())
+  sjqApprovalStatus       ESjqApprovalStatus? @default(APPROVED)
+  location                Location?           @relation(fields: [locationId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  rooms     Room[]
+}
+
+// =======================================ROOM===============================
+
+enum ETypeRoom {
+  BOX
+  GROUP
+}
+
+model Room {
+  id        String     @id @default(uuid())
+  name      String
+  caseId    String
+  type      ETypeRoom  @default(GROUP)
+  case      Case       @relation(fields: [caseId], references: [id])
+  userRooms UserRoom[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+enum EMemberInRoom {
+  MEMBER
+  OWNER
+  DEPUTY
+}
+
+model UserRoom {
+  id         String        @id @default(uuid())
+  userId     String
+  user       User          @relation(fields: [userId], references: [id])
+  roomId     String
+  room       Room          @relation(fields: [roomId], references: [id])
+  memberType EMemberInRoom @default(MEMBER)
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @default(now())
 }
 
 enum EMessageBoxStatus {
