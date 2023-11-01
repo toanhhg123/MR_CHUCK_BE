@@ -50,6 +50,7 @@ export type Case = {
   subDepartment?: Maybe<Scalars['String']['output']>;
   type?: Maybe<ECASE_TYPE>;
   updatedAt?: Maybe<Scalars['Date']['output']>;
+  userCases?: Maybe<Array<Maybe<UserCase>>>;
   userCreated?: Maybe<User>;
   userCreatedId: Scalars['String']['output'];
 };
@@ -81,20 +82,10 @@ export type ECaseStatus =
   | 'IN_PROGRESS'
   | 'NEW';
 
-export type EMemberInMessageBox =
-  | 'DEPUTY'
-  | 'MEMBER'
-  | 'OWNER';
-
 export type EMemberInRoom =
   | 'DEPUTY'
   | 'MEMBER'
   | 'OWNER';
-
-export type EMessageBoxStatus =
-  | 'CLOSED'
-  | 'IN_PROGRESS'
-  | 'NEW';
 
 export type EPAD_VERSION =
   | 'FREE'
@@ -129,86 +120,36 @@ export type LocationInput = {
   name: Scalars['String']['input'];
 };
 
-export type MessageBox = {
-  __typename?: 'MessageBox';
-  dateCreated: Scalars['Date']['output'];
-  id: Scalars['ID']['output'];
-  location: Scalars['String']['output'];
-  messageBoxMembers?: Maybe<Array<Maybe<MessageBoxMember>>>;
-  messageTexts?: Maybe<Array<Maybe<MessageTextBox>>>;
-  name: Scalars['String']['output'];
-  owner?: Maybe<User>;
-  ownerId: Scalars['String']['output'];
-  process?: Maybe<Scalars['Float']['output']>;
-  status?: Maybe<EMessageBoxStatus>;
-};
-
-export type MessageBoxCreate = {
-  location: Scalars['String']['input'];
-  name: Scalars['String']['input'];
-};
-
-export type MessageBoxMember = {
-  __typename?: 'MessageBoxMember';
+export type Message = {
+  __typename?: 'Message';
   dateCreated?: Maybe<Scalars['Date']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  messageBox?: Maybe<MessageBox>;
-  messageBoxId: Scalars['String']['output'];
-  type?: Maybe<EMemberInMessageBox>;
-  user?: Maybe<User>;
-  userId: Scalars['String']['output'];
-};
-
-export type MessageBoxMemberCreate = {
-  messageBoxId: Scalars['String']['input'];
-  userId: Scalars['String']['input'];
-};
-
-export type MessageTextBox = {
-  __typename?: 'MessageTextBox';
-  dateCreated: Scalars['Date']['output'];
   id: Scalars['ID']['output'];
   message: Scalars['String']['output'];
-  messageBox?: Maybe<MessageBox>;
-  messageBoxId: Scalars['String']['output'];
-  replies?: Maybe<Array<Maybe<MessageTextBox>>>;
-  reply?: Maybe<MessageTextBox>;
+  replies?: Maybe<Array<Maybe<Message>>>;
+  reply?: Maybe<Message>;
   replyId?: Maybe<Scalars['String']['output']>;
+  room?: Maybe<Room>;
+  roomId: Scalars['String']['output'];
   sender?: Maybe<User>;
   senderId: Scalars['String']['output'];
 };
 
-export type MessageTextBoxQuery = {
-  messageBoxId: Scalars['String']['input'];
-  pageIndex?: InputMaybe<Scalars['Int']['input']>;
-};
-
-export type MessageTextBoxResponse = {
-  __typename?: 'MessageTextBoxResponse';
-  messages?: Maybe<Array<Maybe<MessageTextBox>>>;
-  pageIndex: Scalars['Int']['output'];
-  totalPage: Scalars['Int']['output'];
-};
-
-export type MessageTextCreate = {
-  message: Scalars['String']['input'];
-  messageBoxId: Scalars['String']['input'];
-  replyId?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
+  addUserToCase?: Maybe<Case>;
   addUsersToRoom?: Maybe<Scalars['Int']['output']>;
   createCase?: Maybe<Case>;
   createLocation?: Maybe<Location>;
-  createMessageBox?: Maybe<MessageBox>;
-  createMessageBoxMember?: Maybe<MessageBoxMember>;
   createRole?: Maybe<ERole>;
   createRoom?: Maybe<Room>;
   createUser?: Maybe<Scalars['ID']['output']>;
   deleteUser?: Maybe<Scalars['ID']['output']>;
   login: AuthResponse;
-  sendMessage?: Maybe<MessageTextBox>;
+};
+
+
+export type MutationaddUserToCaseArgs = {
+  input: UserCaseInput;
 };
 
 
@@ -224,16 +165,6 @@ export type MutationcreateCaseArgs = {
 
 export type MutationcreateLocationArgs = {
   input: LocationInput;
-};
-
-
-export type MutationcreateMessageBoxArgs = {
-  input: MessageBoxCreate;
-};
-
-
-export type MutationcreateMessageBoxMemberArgs = {
-  input: MessageBoxMemberCreate;
 };
 
 
@@ -261,19 +192,13 @@ export type MutationloginArgs = {
   authRequest: AuthRequest;
 };
 
-
-export type MutationsendMessageArgs = {
-  messageTextCreate: MessageTextCreate;
-};
-
 export type Query = {
   __typename?: 'Query';
+  getCaseById?: Maybe<Case>;
   getCases?: Maybe<Array<Maybe<Case>>>;
   getLocations?: Maybe<Array<Maybe<Location>>>;
   getMe?: Maybe<User>;
-  getMessage?: Maybe<MessageBox>;
-  getMessageByMessageBoxId?: Maybe<MessageTextBoxResponse>;
-  getMessagesBoxForMe?: Maybe<Array<Maybe<MessageBox>>>;
+  getMessageByRoomId?: Maybe<Array<Maybe<Message>>>;
   getMyCases?: Maybe<Array<Maybe<Case>>>;
   getRoles?: Maybe<Array<Maybe<Role>>>;
   getRoomsByCaseId?: Maybe<Array<Maybe<Room>>>;
@@ -282,13 +207,13 @@ export type Query = {
 };
 
 
-export type QuerygetMessageArgs = {
-  id: Scalars['String']['input'];
+export type QuerygetCaseByIdArgs = {
+  caseId: Scalars['String']['input'];
 };
 
 
-export type QuerygetMessageByMessageBoxIdArgs = {
-  messageTextBoxQuery: MessageTextBoxQuery;
+export type QuerygetMessageByRoomIdArgs = {
+  roomId: Scalars['String']['input'];
 };
 
 
@@ -331,6 +256,22 @@ export type User = {
   role: ERole;
   roleRef?: Maybe<Role>;
   username: Scalars['String']['output'];
+};
+
+export type UserCase = {
+  __typename?: 'UserCase';
+  case?: Maybe<Case>;
+  caseId: Scalars['String']['output'];
+  createdAt?: Maybe<Scalars['Date']['output']>;
+  id: Scalars['ID']['output'];
+  updatedAt?: Maybe<Scalars['Date']['output']>;
+  user?: Maybe<User>;
+  userId: Scalars['String']['output'];
+};
+
+export type UserCaseInput = {
+  caseId: Scalars['String']['input'];
+  userIds: Array<Scalars['String']['input']>;
 };
 
 export type UserRequestCreate = {
@@ -442,9 +383,7 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   ECASE_TYPE: ECASE_TYPE;
   ECaseStatus: ECaseStatus;
-  EMemberInMessageBox: EMemberInMessageBox;
   EMemberInRoom: EMemberInRoom;
-  EMessageBoxStatus: EMessageBoxStatus;
   EPAD_VERSION: EPAD_VERSION;
   ERole: ERole;
   ESjqApprovalStatus: ESjqApprovalStatus;
@@ -453,20 +392,14 @@ export type ResolversTypes = {
   Location: ResolverTypeWrapper<Location>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   LocationInput: LocationInput;
-  MessageBox: ResolverTypeWrapper<MessageBox>;
-  Float: ResolverTypeWrapper<Scalars['Float']['output']>;
-  MessageBoxCreate: MessageBoxCreate;
-  MessageBoxMember: ResolverTypeWrapper<MessageBoxMember>;
-  MessageBoxMemberCreate: MessageBoxMemberCreate;
-  MessageTextBox: ResolverTypeWrapper<MessageTextBox>;
-  MessageTextBoxQuery: MessageTextBoxQuery;
-  MessageTextBoxResponse: ResolverTypeWrapper<MessageTextBoxResponse>;
-  MessageTextCreate: MessageTextCreate;
+  Message: ResolverTypeWrapper<Message>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
   Room: ResolverTypeWrapper<Room>;
   User: ResolverTypeWrapper<User>;
+  UserCase: ResolverTypeWrapper<UserCase>;
+  UserCaseInput: UserCaseInput;
   UserRequestCreate: UserRequestCreate;
   UserRequestLogin: UserRequestLogin;
   UserRoom: ResolverTypeWrapper<UserRoom>;
@@ -487,20 +420,14 @@ export type ResolversParentTypes = {
   Location: Location;
   ID: Scalars['ID']['output'];
   LocationInput: LocationInput;
-  MessageBox: MessageBox;
-  Float: Scalars['Float']['output'];
-  MessageBoxCreate: MessageBoxCreate;
-  MessageBoxMember: MessageBoxMember;
-  MessageBoxMemberCreate: MessageBoxMemberCreate;
-  MessageTextBox: MessageTextBox;
-  MessageTextBoxQuery: MessageTextBoxQuery;
-  MessageTextBoxResponse: MessageTextBoxResponse;
-  MessageTextCreate: MessageTextCreate;
+  Message: Message;
   Mutation: {};
   Query: {};
   Role: Role;
   Room: Room;
   User: User;
+  UserCase: UserCase;
+  UserCaseInput: UserCaseInput;
   UserRequestCreate: UserRequestCreate;
   UserRequestLogin: UserRequestLogin;
   UserRoom: UserRoom;
@@ -535,6 +462,7 @@ export type CaseResolvers<ContextType = any, ParentType extends ResolversParentT
   subDepartment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['ECASE_TYPE']>, ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  userCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['UserCase']>>>, ParentType, ContextType>;
   userCreated?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   userCreatedId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -551,73 +479,38 @@ export type LocationResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MessageBoxResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageBox'] = ResolversParentTypes['MessageBox']> = {
-  dateCreated?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  messageBoxMembers?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageBoxMember']>>>, ParentType, ContextType>;
-  messageTexts?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageTextBox']>>>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  owner?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  ownerId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  process?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  status?: Resolver<Maybe<ResolversTypes['EMessageBoxStatus']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type MessageBoxMemberResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageBoxMember'] = ResolversParentTypes['MessageBoxMember']> = {
+export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
   dateCreated?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  messageBox?: Resolver<Maybe<ResolversTypes['MessageBox']>, ParentType, ContextType>;
-  messageBoxId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  type?: Resolver<Maybe<ResolversTypes['EMemberInMessageBox']>, ParentType, ContextType>;
-  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type MessageTextBoxResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageTextBox'] = ResolversParentTypes['MessageTextBox']> = {
-  dateCreated?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  messageBox?: Resolver<Maybe<ResolversTypes['MessageBox']>, ParentType, ContextType>;
-  messageBoxId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  replies?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageTextBox']>>>, ParentType, ContextType>;
-  reply?: Resolver<Maybe<ResolversTypes['MessageTextBox']>, ParentType, ContextType>;
+  replies?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType>;
+  reply?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType>;
   replyId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  room?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType>;
+  roomId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   sender?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   senderId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type MessageTextBoxResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['MessageTextBoxResponse'] = ResolversParentTypes['MessageTextBoxResponse']> = {
-  messages?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageTextBox']>>>, ParentType, ContextType>;
-  pageIndex?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  totalPage?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addUserToCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationaddUserToCaseArgs, 'input'>>;
   addUsersToRoom?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationaddUsersToRoomArgs, 'userRoomInput'>>;
   createCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationcreateCaseArgs, 'caseInput'>>;
   createLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<MutationcreateLocationArgs, 'input'>>;
-  createMessageBox?: Resolver<Maybe<ResolversTypes['MessageBox']>, ParentType, ContextType, RequireFields<MutationcreateMessageBoxArgs, 'input'>>;
-  createMessageBoxMember?: Resolver<Maybe<ResolversTypes['MessageBoxMember']>, ParentType, ContextType, RequireFields<MutationcreateMessageBoxMemberArgs, 'input'>>;
   createRole?: Resolver<Maybe<ResolversTypes['ERole']>, ParentType, ContextType, RequireFields<MutationcreateRoleArgs, 'name'>>;
   createRoom?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<MutationcreateRoomArgs, 'input'>>;
   createUser?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationcreateUserArgs, 'userRequestCreate'>>;
   deleteUser?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationdeleteUserArgs, 'id'>>;
   login?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationloginArgs, 'authRequest'>>;
-  sendMessage?: Resolver<Maybe<ResolversTypes['MessageTextBox']>, ParentType, ContextType, RequireFields<MutationsendMessageArgs, 'messageTextCreate'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  getCaseById?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<QuerygetCaseByIdArgs, 'caseId'>>;
   getCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['Case']>>>, ParentType, ContextType>;
   getLocations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Location']>>>, ParentType, ContextType>;
   getMe?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  getMessage?: Resolver<Maybe<ResolversTypes['MessageBox']>, ParentType, ContextType, RequireFields<QuerygetMessageArgs, 'id'>>;
-  getMessageByMessageBoxId?: Resolver<Maybe<ResolversTypes['MessageTextBoxResponse']>, ParentType, ContextType, RequireFields<QuerygetMessageByMessageBoxIdArgs, 'messageTextBoxQuery'>>;
-  getMessagesBoxForMe?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageBox']>>>, ParentType, ContextType>;
+  getMessageByRoomId?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType, RequireFields<QuerygetMessageByRoomIdArgs, 'roomId'>>;
   getMyCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['Case']>>>, ParentType, ContextType>;
   getRoles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Role']>>>, ParentType, ContextType>;
   getRoomsByCaseId?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType, RequireFields<QuerygetRoomsByCaseIdArgs, 'caseId'>>;
@@ -657,6 +550,17 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserCaseResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserCase'] = ResolversParentTypes['UserCase']> = {
+  case?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType>;
+  caseId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserRoomResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserRoom'] = ResolversParentTypes['UserRoom']> = {
   createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -674,15 +578,13 @@ export type Resolvers<ContextType = any> = {
   Case?: CaseResolvers<ContextType>;
   Date?: GraphQLScalarType;
   Location?: LocationResolvers<ContextType>;
-  MessageBox?: MessageBoxResolvers<ContextType>;
-  MessageBoxMember?: MessageBoxMemberResolvers<ContextType>;
-  MessageTextBox?: MessageTextBoxResolvers<ContextType>;
-  MessageTextBoxResponse?: MessageTextBoxResponseResolvers<ContextType>;
+  Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Role?: RoleResolvers<ContextType>;
   Room?: RoomResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
+  UserCase?: UserCaseResolvers<ContextType>;
   UserRoom?: UserRoomResolvers<ContextType>;
 };
 

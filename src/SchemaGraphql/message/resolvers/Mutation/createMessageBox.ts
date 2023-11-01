@@ -1,2 +1,0 @@
-import type   { MutationResolvers } from './../../../types.generated';
-        export const createMessageBox: NonNullable<MutationResolvers['createMessageBox']> = async (_parent, _arg, _ctx) => { /* Implement Mutation.createMessageBox resolver logic here */ };

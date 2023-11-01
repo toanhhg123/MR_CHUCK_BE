@@ -1,95 +1,26 @@
-import { MessageTextCreate, Resolvers } from '~/SchemaGraphql/types.generated'
-import messageService from './message.service'
+import { Resolvers } from '~/SchemaGraphql/types.generated'
 import { isAuth } from '~/auth/auth.guard'
-import { GraphQLError } from 'graphql'
-import userService from '~/user/user.service'
+import roomService from '~/room/room.service'
+import messageService from './message.service'
 
 export const messageResolvers: Resolvers = {
   Query: {
-    getMessage: async (_, { id }, context) => {
-      const { id: userId } = isAuth(context)
+    getMessageByRoomId: async (_, { roomId }, context) => {
+      const { id } = isAuth(context)
 
-      if (!(await messageService.isMemberInMessageBok(userId.toString(), id))) {
-        throw new GraphQLError('you is not member in box chat', {
-          extensions: {
-            code: 'FORBIDDEN',
-            http: { status: 403 }
-          }
-        })
+      if (!(await roomService.isMemberInRoom(id.toString(), roomId))) {
+        throw new Error('you is not member in room')
       }
 
-      const messageBox = await messageService.getMessage(id)
-      return messageBox
-    },
-
-    getMessagesBoxForMe: async (_, __, context) => {
-      const { id } = isAuth(context)
-      const messageBox = await messageService.getMessageBoxsByUserId(id.toString())
-      return messageBox
-    },
-
-    getMessageByMessageBoxId: async (_, { messageTextBoxQuery }, context) => {
-      isAuth(context)
-      return await messageService.queryMessageByMessageBoxId(messageTextBoxQuery)
+      return await messageService.getMessageByRoomId(roomId)
     }
   },
 
-  Mutation: {
-    createMessageBox: async (_, { input }, context) => {
-      const { id } = isAuth(context)
+  Mutation: {},
 
-      return await messageService.createMessageBox({
-        ownerId: id.toString(),
-        name: input.name,
-        location: input.location,
-        id: '',
-        dateCreated: new Date()
-      })
-    },
-
-    createMessageBoxMember: async (_, { input }, context) => {
-      const { id } = isAuth(context)
-
-      if (!(await messageService.isOwnerInMessageBox(id.toString(), input.messageBoxId))) {
-        throw new GraphQLError('you is not owner', {
-          extensions: {
-            code: 'FORBIDDEN',
-            http: { status: 403 }
-          }
-        })
-      }
-
-      return await messageService.createMessageBoxMember(input)
-    },
-
-    sendMessage: async (_, { messageTextCreate }, context) => {
-      const { id } = isAuth(context)
-      const message = await messageService.createMessageText(id.toString(), messageTextCreate as MessageTextCreate)
-
-      return message
-    }
-  },
-
-  MessageBox: {
-    owner: async (parent) => {
-      return parent.owner ? parent.owner : await userService.getUserById(parent.ownerId)
-    }
-  },
-
-  MessageBoxMember: {
-    user: async (parent) => {
-      return parent.user ? parent.user : await userService.getUserById(parent.userId)
-    }
-  },
-
-  MessageTextBox: {
-    sender: async ({ senderId, sender }) => {
-      return sender ? sender : userService.getUserById(senderId)
-    },
-
-    reply: async ({ reply, replyId }) => {
-      if (!replyId) return null
-      return reply ? reply : messageService.getMessageTextById(replyId)
+  Message: {
+    room: ({ room, roomId }) => {
+      return room ? room : roomService.getRoomById(roomId)
     }
   }
 }

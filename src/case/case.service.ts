@@ -1,7 +1,8 @@
-import { CaseInput } from '~/SchemaGraphql/types.generated'
+import { CaseInput, UserCaseInput } from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
+import _ from 'lodash'
 
-const { case: CaseModel } = prisma
+const { case: CaseModel, userCase } = prisma
 
 export class CaseService {
   getCaseByUserId(userCreatedId: string) {
@@ -55,7 +56,8 @@ export class CaseService {
     return CaseModel.create({
       data: {
         ...input,
-        userCreatedId
+        userCreatedId,
+        sjqSubmissionDate: new Date(input.sjqSubmissionDate)
       },
       include: {
         location: true
@@ -64,27 +66,42 @@ export class CaseService {
   }
 
   async isMemberInCase(caseId: string, userId: string) {
-    const isExist = await CaseModel.findFirst({
+    const isExist = await userCase.findFirst({
       where: {
-        id: caseId,
-        OR: [
-          {
-            rooms: {
-              some: {
-                userRooms: {
-                  some: {
-                    userId
-                  }
-                }
-              }
-            }
-          },
-          { userCreatedId: userId }
-        ]
+        userId,
+        caseId
       }
     })
 
     return isExist ? true : false
+  }
+
+  getCaseById(id: string) {
+    return CaseModel.findFirst({
+      where: { id },
+      include: {
+        userCases: {
+          include: { user: true }
+        },
+        userCreated: true
+      }
+    })
+  }
+
+  async createUserCase(input: UserCaseInput) {
+    const userCasesDb = await userCase.findMany({ where: { caseId: input.caseId } })
+
+    const userIdInserts = input.userIds.filter((id) => {
+      return !userCasesDb.find((userCase) => userCase.userId === id)
+    })
+
+    const uniqueArray = _.uniq(userIdInserts)
+
+    await userCase.createMany({
+      data: uniqueArray.map((userId) => ({ userId, caseId: input.caseId }))
+    })
+
+    return this.getCaseById(input.caseId)
   }
 }
 

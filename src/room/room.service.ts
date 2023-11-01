@@ -26,6 +26,7 @@ export class RoomService {
         }
       }
     })
+
     const { userCreatedId } = roomDb.case
 
     await userRoom.create({ data: { userId: userCreatedId, roomId: roomDb.id, memberType: 'OWNER' } })
@@ -58,6 +59,19 @@ export class RoomService {
   getRoomByCaseId(caseId: string) {
     return room.findMany({
       where: { caseId },
+      include: {
+        userRooms: {
+          include: {
+            user: true
+          }
+        }
+      }
+    })
+  }
+
+  getRoomById(id: string) {
+    return room.findFirst({
+      where: { id },
       include: {
         userRooms: {
           include: {

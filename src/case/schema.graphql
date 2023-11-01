@@ -39,11 +39,22 @@ type Case {
   sjqSubmissionDate: Date
   sjqApprovalStatus: ESjqApprovalStatus
   userCreatedId: String!
-  userCreated: User
   createdAt: Date
   updatedAt: Date
   location: Location
+  userCreated: User
   rooms: [Room]
+  userCases: [UserCase]
+}
+
+type UserCase {
+  id: ID!
+  userId: String!
+  user: User
+  caseId: String!
+  case: Case
+  createdAt: Date
+  updatedAt: Date
 }
 
 input CaseInput {
@@ -64,11 +75,18 @@ input CaseInput {
   sjqApprovalStatus: ESjqApprovalStatus
 }
 
+input UserCaseInput {
+  userIds: [String!]!
+  caseId: String!
+}
+
 type Query {
   getCases: [Case]
   getMyCases: [Case]
+  getCaseById(caseId: String!): Case
 }
 
 type Mutation {
   createCase(caseInput: CaseInput!): Case
+  addUserToCase(input: UserCaseInput!): Case
 }

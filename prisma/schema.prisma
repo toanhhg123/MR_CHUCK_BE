@@ -30,11 +30,10 @@ model User {
   gender   String?
   avatar   String?
 
-  messageBoxs      MessageBox[]
-  MessageBoxMember MessageBoxMember[]
-  MessageTextBox   MessageTextBox[]
-  Case             Case[]
-  UserRoom         UserRoom[]
+  Case     Case[]
+  UserRoom UserRoom[]
+  Message  Message[]
+  UserCase UserCase[]
 }
 
 // ==================================CASE===========================
@@ -86,9 +85,20 @@ model Case {
   sjqApprovalStatus       ESjqApprovalStatus? @default(APPROVED)
   location                Location?           @relation(fields: [locationId], references: [id])
 
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  rooms     Room[]
+  userCases UserCase[]
+}
+
+model UserCase {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  caseId    String
+  case      Case     @relation(fields: [caseId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  rooms     Room[]
 }
 
 // =======================================ROOM===============================
@@ -105,9 +115,9 @@ model Room {
   type      ETypeRoom  @default(GROUP)
   case      Case       @relation(fields: [caseId], references: [id])
   userRooms UserRoom[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @default(now())
+  Message   Message[]
 }
 
 enum EMemberInRoom {
@@ -127,24 +137,38 @@ model UserRoom {
   updatedAt  DateTime      @default(now())
 }
 
+model Message {
+  id          String    @id @default(uuid())
+  senderId    String
+  replyId     String?
+  message     String
+  roomId      String
+  room        Room      @relation(fields: [roomId], references: [id])
+  dateCreated DateTime  @default(now())
+  reply       Message?  @relation("Replies", fields: [replyId], references: [id])
+  sender      User      @relation(fields: [senderId], references: [id])
+  replies     Message[] @relation("Replies")
+}
+
 enum EMessageBoxStatus {
   NEW
   IN_PROGRESS
   CLOSED
 }
 
-model MessageBox {
-  id                String             @id @default(uuid())
-  ownerId           String
-  name              String
-  process           Int                @default(0)
-  location          String
-  status            EMessageBoxStatus  @default(NEW)
-  dateCreated       DateTime           @default(now())
-  owner             User               @relation(fields: [ownerId], references: [id])
-  messageBoxMembers MessageBoxMember[]
-  messageTexts      MessageTextBox[]
-}
+// model MessageBox {
+//   id                String             @id @default(uuid())
+//   ownerId           String
+//   name              String
+//   process           Int                @default(0)
+//   location          String
+//   status            EMessageBoxStatus  @default(NEW)
+//   dateCreated       DateTime           @default(now())
+//   owner             User               @relation(fields: [ownerId], references: [id])
+//   messageBoxMembers MessageBoxMember[]
+//   messageTexts      MessageTextBox[]
+//   Message           Message[]
+// }
 
 enum EMemberInMessageBox {
   MEMBER
@@ -152,25 +176,12 @@ enum EMemberInMessageBox {
   DEPUTY
 }
 
-model MessageBoxMember {
-  id           String              @id @default(uuid())
-  userId       String
-  type         EMemberInMessageBox @default(MEMBER)
-  messageBoxId String
-  dateCreated  DateTime            @default(now())
-  user         User                @relation(fields: [userId], references: [id])
-  messageBox   MessageBox          @relation(fields: [messageBoxId], references: [id])
-}
-
-model MessageTextBox {
-  id           String           @id @default(uuid())
-  senderId     String
-  replyId      String?
-  message      String
-  messageBoxId String
-  dateCreated  DateTime         @default(now())
-  reply        MessageTextBox?  @relation("Replies", fields: [replyId], references: [id])
-  sender       User             @relation(fields: [senderId], references: [id])
-  messageBox   MessageBox       @relation(fields: [messageBoxId], references: [id])
-  replies      MessageTextBox[] @relation("Replies")
-}
+// model MessageBoxMember {
+//   id           String              @id @default(uuid())
+//   userId       String
+//   type         EMemberInMessageBox @default(MEMBER)
+//   messageBoxId String
+//   dateCreated  DateTime            @default(now())
+//   user         User                @relation(fields: [userId], references: [id])
+//   messageBox   MessageBox          @relation(fields: [messageBoxId], references: [id])
+// }

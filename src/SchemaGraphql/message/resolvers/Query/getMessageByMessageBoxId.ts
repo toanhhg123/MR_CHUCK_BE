@@ -1,2 +1,0 @@
-import type   { QueryResolvers } from './../../../types.generated';
-        export const getMessageByMessageBoxId: NonNullable<QueryResolvers['getMessageByMessageBoxId']> = async (_parent, _arg, _ctx) => { /* Implement Query.getMessageByMessageBoxId resolver logic here */ };

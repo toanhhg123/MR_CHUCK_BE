@@ -1,89 +1,18 @@
 scalar Date
 
-enum EMemberInMessageBox {
-  MEMBER
-  OWNER
-  DEPUTY
-}
-
-input MessageBoxCreate {
-  name: String!
-  location: String!
-}
-
-enum EMessageBoxStatus {
-  NEW
-  IN_PROGRESS
-  CLOSED
-}
-
-type MessageBox {
-  id: ID!
-  ownerId: String!
-  name: String!
-  process: Float
-  location: String!
-  status: EMessageBoxStatus
-  dateCreated: Date!
-  owner: User
-  messageBoxMembers: [MessageBoxMember]
-  messageTexts: [MessageTextBox]
-}
-
-input MessageBoxMemberCreate {
-  userId: String!
-  messageBoxId: String!
-}
-
-type MessageBoxMember {
-  id: ID
-  userId: String!
-  type: EMemberInMessageBox
-  messageBoxId: String!
-  dateCreated: Date
-  user: User
-  messageBox: MessageBox
-}
-
-input MessageTextCreate {
-  message: String!
-  replyId: String
-  messageBoxId: String!
-}
-
-type MessageTextBox {
+type Message {
   id: ID!
   senderId: String!
   replyId: String
   message: String!
-  messageBoxId: String!
-  dateCreated: Date!
-
+  roomId: String!
+  room: Room
+  dateCreated: Date
+  reply: Message
   sender: User
-  reply: MessageTextBox
-  messageBox: MessageBox
-  replies: [MessageTextBox]
-}
-
-type MessageTextBoxResponse {
-  totalPage: Int!
-  pageIndex: Int!
-  messages: [MessageTextBox]
-}
-
-input MessageTextBoxQuery {
-  pageIndex: Int
-  messageBoxId: String!
+  replies: [Message]
 }
 
 type Query {
-  getMessage(id: String!): MessageBox
-  getMessagesBoxForMe: [MessageBox]
-  getMessageByMessageBoxId(messageTextBoxQuery: MessageTextBoxQuery!): MessageTextBoxResponse
-}
-
-type Mutation {
-  createMessageBox(input: MessageBoxCreate!): MessageBox
-  createMessageBoxMember(input: MessageBoxMemberCreate!): MessageBoxMember
-  sendMessage(messageTextCreate: MessageTextCreate!): MessageTextBox
+  getMessageByRoomId(roomId: String!): [Message]
 }
