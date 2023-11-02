@@ -80,6 +80,24 @@ export type CaseInput = {
   type?: InputMaybe<ECASE_TYPE>;
 };
 
+export type CaseInputUpdate = {
+  additionalInfo?: InputMaybe<Scalars['String']['input']>;
+  attorneyFirmName?: InputMaybe<Scalars['String']['input']>;
+  attorneyName?: InputMaybe<Scalars['String']['input']>;
+  complaintFormUploadPath?: InputMaybe<Scalars['String']['input']>;
+  description?: InputMaybe<Scalars['String']['input']>;
+  locationId?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  neutralSummary?: InputMaybe<Scalars['String']['input']>;
+  number?: InputMaybe<Scalars['Int']['input']>;
+  paidVersion?: InputMaybe<EPAD_VERSION>;
+  sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
+  sjqSubmissionDate?: InputMaybe<Scalars['Date']['input']>;
+  status?: InputMaybe<ECaseStatus>;
+  subDepartment?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<ECASE_TYPE>;
+};
+
 export type ECASE_TYPE =
   | 'MEDICAL_MALPRACTICE'
   | 'TORTS';
@@ -235,7 +253,7 @@ export type MutationregisterArgs = {
 
 export type MutationupdateCaseArgs = {
   caseId: Scalars['String']['input'];
-  input: CaseInput;
+  input: CaseInputUpdate;
 };
 
 export type Query = {
@@ -250,6 +268,7 @@ export type Query = {
   getRoomsByCaseId?: Maybe<Array<Maybe<Room>>>;
   getUser?: Maybe<User>;
   getUsers?: Maybe<Array<Maybe<User>>>;
+  searchUser?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -270,6 +289,11 @@ export type QuerygetRoomsByCaseIdArgs = {
 
 export type QuerygetUserArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type QuerysearchUserArgs = {
+  query: Scalars['String']['input'];
 };
 
 export type Role = {
@@ -427,6 +451,7 @@ export type ResolversTypes = {
   Case: ResolverTypeWrapper<Case>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   CaseInput: CaseInput;
+  CaseInputUpdate: CaseInputUpdate;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
   ECASE_TYPE: ECASE_TYPE;
   ECaseStatus: ECaseStatus;
@@ -465,6 +490,7 @@ export type ResolversParentTypes = {
   Case: Case;
   Int: Scalars['Int']['output'];
   CaseInput: CaseInput;
+  CaseInputUpdate: CaseInputUpdate;
   Date: Scalars['Date']['output'];
   InputRoom: InputRoom;
   Location: Location;
@@ -586,6 +612,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getRoomsByCaseId?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType, RequireFields<QuerygetRoomsByCaseIdArgs, 'caseId'>>;
   getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerygetUserArgs, 'id'>>;
   getUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
+  searchUser?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<QuerysearchUserArgs, 'query'>>;
 };
 
 export type RoleResolvers<ContextType = any, ParentType extends ResolversParentTypes['Role'] = ResolversParentTypes['Role']> = {

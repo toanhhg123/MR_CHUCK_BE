@@ -11,6 +11,10 @@ export const userResolvers: Resolvers = {
 
       const users = await userService.getUsers()
       return users
+    },
+
+    searchUser: async (_, { query }) => {
+      return userService.findUserByEmailOrUsername(query)
     }
   },
 

@@ -1,6 +1,7 @@
-import { CaseInput, UserCaseInput } from '~/SchemaGraphql/types.generated'
+import { CaseInput, CaseInputUpdate, UserCaseInput } from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
 import _ from 'lodash'
+import { Case } from '@prisma/client'
 
 const { case: CaseModel, userCase } = prisma
 
@@ -104,9 +105,9 @@ export class CaseService {
     return this.getCaseById(input.caseId)
   }
 
-  updateCase(caseId: string, input: CaseInput) {
-    input.sjqSubmissionDate = new Date(input.sjqSubmissionDate)
-    return CaseModel.update({ data: input, where: { id: caseId } })
+  updateCase(caseId: string, input: CaseInputUpdate) {
+    if (input.sjqSubmissionDate) input.sjqSubmissionDate = new Date(input.sjqSubmissionDate)
+    return CaseModel.update({ data: input as Case, where: { id: caseId } })
   }
 }
 

@@ -25,6 +25,7 @@ input UserRequestCreate {
 type Query {
   getUsers: [User]
   getUser(id: ID!): User
+  searchUser(query: String!): [User]
 }
 
 type Mutation {

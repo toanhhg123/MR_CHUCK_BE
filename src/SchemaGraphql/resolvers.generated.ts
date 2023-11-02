@@ -28,13 +28,14 @@ import    { getRoles as Query_getRoles } from './role/resolvers/Query/getRoles';
 import    { getRoomsByCaseId as Query_getRoomsByCaseId } from './room/resolvers/Query/getRoomsByCaseId';
 import    { getUser as Query_getUser } from './user/resolvers/Query/getUser';
 import    { getUsers as Query_getUsers } from './user/resolvers/Query/getUsers';
+import    { searchUser as Query_searchUser } from './user/resolvers/Query/searchUser';
 import    { Role } from './role/resolvers/Role';
 import    { Room } from './room/resolvers/Room';
 import    { User } from './user/resolvers/User';
 import    { UserCase } from './case/resolvers/UserCase';
 import    { UserRoom } from './room/resolvers/UserRoom';
     export const resolvers: Resolvers = {
-      Query: { getCaseById: Query_getCaseById,getCases: Query_getCases,getLocations: Query_getLocations,getMe: Query_getMe,getMessageByRoomId: Query_getMessageByRoomId,getMyCases: Query_getMyCases,getRoles: Query_getRoles,getRoomsByCaseId: Query_getRoomsByCaseId,getUser: Query_getUser,getUsers: Query_getUsers },
+      Query: { getCaseById: Query_getCaseById,getCases: Query_getCases,getLocations: Query_getLocations,getMe: Query_getMe,getMessageByRoomId: Query_getMessageByRoomId,getMyCases: Query_getMyCases,getRoles: Query_getRoles,getRoomsByCaseId: Query_getRoomsByCaseId,getUser: Query_getUser,getUsers: Query_getUsers,searchUser: Query_searchUser },
       Mutation: { addUserToCase: Mutation_addUserToCase,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register,updateCase: Mutation_updateCase },
       
       AuthResponse: AuthResponse,

@@ -30,7 +30,7 @@ const roomResolvers: Resolvers = {
     addUsersToRoom: async (_, { userRoomInput: { userIds, roomId } }, context) => {
       const { id } = isAuth(context)
 
-      if (!(await caseService.isMemberInCase(roomId, id.toString()))) {
+      if (!(await roomService.isOwnerRoom(id.toString(), roomId))) {
         throw new Error('user is not owner')
       }
 

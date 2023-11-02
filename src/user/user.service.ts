@@ -12,6 +12,26 @@ export class UserService {
     })
   }
 
+  findUserByEmailOrUsername(query: string) {
+    return prisma.user.findMany({
+      where: {
+        OR: [
+          {
+            username: {
+              contains: query
+            }
+          },
+          {
+            email: {
+              contains: query
+            }
+          }
+        ]
+      },
+      take: 20 // Limit the results to 20 records
+    })
+  }
+
   getByEmail(email: string) {
     return prisma.user.findFirst({ where: { email } })
   }

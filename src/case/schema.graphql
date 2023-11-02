@@ -76,6 +76,24 @@ input CaseInput {
   sjqApprovalStatus: ESjqApprovalStatus
 }
 
+input CaseInputUpdate {
+  name: String
+  number: Int
+  type: ECASE_TYPE
+  status: ECaseStatus
+  paidVersion: EPAD_VERSION
+  description: String
+  locationId: String
+  subDepartment: String
+  attorneyName: String
+  attorneyFirmName: String
+  complaintFormUploadPath: String
+  neutralSummary: String
+  additionalInfo: String
+  sjqSubmissionDate: Date
+  sjqApprovalStatus: ESjqApprovalStatus
+}
+
 input UserCaseInput {
   userIds: [String!]!
   caseId: String!
@@ -90,5 +108,5 @@ type Query {
 type Mutation {
   createCase(caseInput: CaseInput!): Case
   addUserToCase(input: UserCaseInput!): Case
-  updateCase(caseId: String!, input: CaseInput!): Case
+  updateCase(caseId: String!, input: CaseInputUpdate!): Case
 }
