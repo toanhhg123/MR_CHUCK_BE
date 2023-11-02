@@ -1,6 +1,7 @@
 enum ERole {
   ADMIN
   USER
+  JUROR
 }
 
 type Role {

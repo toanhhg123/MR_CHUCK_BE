@@ -118,6 +118,7 @@ export type EPAD_VERSION =
 
 export type ERole =
   | 'ADMIN'
+  | 'JUROR'
   | 'USER';
 
 export type ESjqApprovalStatus =

@@ -2,6 +2,7 @@ import { expressMiddleware } from '@apollo/server/express4'
 import cors from 'cors'
 import express from 'express'
 import serverApollo from './apollo'
+import uploadRouter from '~/api/upload/upload.route'
 
 const server = async () => {
   const app = express()
@@ -17,6 +18,7 @@ const server = async () => {
 
   await serverApollo.start()
 
+  app.use('/upload', uploadRouter)
   app.use(
     '/graphql',
     cors<cors.CorsRequest>(),

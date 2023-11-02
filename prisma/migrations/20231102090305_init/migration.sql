@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "ERole" ADD VALUE 'JUROR';

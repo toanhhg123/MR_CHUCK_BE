@@ -13,14 +13,17 @@ model Role {
 }
 
 model User {
-  id          String        @id @default(uuid())
-  username    String
-  email       String        @unique
-  password    String
-  role        ERole
-  age         Int?
-  avatar      String?
-  gender      String?
+  id       String  @id @default(uuid())
+  username String
+  email    String  @unique
+  password String
+  role     ERole
+  age      Int?
+  avatar   String?
+  gender   String?
+
+  paidVersion EPAD_VERSION?
+
   Case        Case[]
   Message     Message[]
   UserCase    UserCase[]
@@ -131,6 +134,7 @@ model avatar_images {
 enum ERole {
   USER
   ADMIN
+  JUROR
 }
 
 enum ECaseStatus {
