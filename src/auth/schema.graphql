@@ -6,7 +6,8 @@ input AuthRequest {
 input AuthRegisterInput {
   email: String!
   password: String!
-  username: String!
+  firstName: String
+  lastName: String
 }
 
 type AuthResponse {

@@ -19,8 +19,9 @@ export type Scalars = {
 
 export type AuthRegisterInput = {
   email: Scalars['String']['input'];
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
-  username: Scalars['String']['input'];
 };
 
 export type AuthRequest = {
@@ -321,8 +322,10 @@ export type User = {
   age?: Maybe<Scalars['Int']['output']>;
   avatar?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
+  firstName?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
+  lastName?: Maybe<Scalars['String']['output']>;
   password: Scalars['String']['output'];
   role: ERole;
   roleRef?: Maybe<Role>;
@@ -347,6 +350,8 @@ export type UserCaseInput = {
 
 export type UserRequestCreate = {
   email: Scalars['String']['input'];
+  firstName?: InputMaybe<Scalars['String']['input']>;
+  lastName?: InputMaybe<Scalars['String']['input']>;
   password: Scalars['String']['input'];
   role: ERole;
   username: Scalars['String']['input'];
@@ -639,8 +644,10 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   age?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   role?: Resolver<ResolversTypes['ERole'], ParentType, ContextType>;
   roleRef?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;

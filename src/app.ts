@@ -18,7 +18,8 @@ const server = async () => {
 
   await serverApollo.start()
 
-  app.use('/upload', uploadRouter)
+  app.use('/api/upload', uploadRouter)
+
   app.use(
     '/graphql',
     cors<cors.CorsRequest>(),
