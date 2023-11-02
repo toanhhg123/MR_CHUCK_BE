@@ -13,24 +13,24 @@ model Role {
 }
 
 model User {
-  id        String  @id @default(uuid())
-  username  String
-  firstName String?
-  lastName  String?
-  email     String  @unique
-  password  String
-  role      ERole
-  age       Int?
-  avatar    String?
-  gender    String?
-
-  paidVersion EPAD_VERSION?
-
-  Case        Case[]
-  Message     Message[]
-  UserCase    UserCase[]
-  UserRoom    UserRoom[]
-  MessageCase MessageCase[]
+  id                     String         @id @default(uuid())
+  username               String
+  firstName              String?
+  lastName               String?
+  email                  String         @unique
+  password               String
+  role                   ERole
+  age                    Int?
+  avatar                 String?
+  gender                 String?
+  paidVersion            EPAD_VERSION?
+  avatar_imagesAvatar_id String?
+  avatarImage            avatar_images? @relation(fields: [avatar_imagesAvatar_id], references: [avatar_id])
+  Case                   Case[]
+  Message                Message[]
+  UserCase               UserCase[]
+  UserRoom               UserRoom[]
+  MessageCase            MessageCase[]
 }
 
 model Location {
@@ -131,6 +131,7 @@ model avatar_images {
   age_range String?
   etnicity  String?
   image_url String?
+  User      User[]
 }
 
 enum ERole {

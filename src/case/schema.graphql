@@ -109,4 +109,5 @@ type Mutation {
   createCase(caseInput: CaseInput!): Case
   addUserToCase(input: UserCaseInput!): Case
   updateCase(caseId: String!, input: CaseInputUpdate!): Case
+  addJunrorToCase(num: Int!, caseId: String!): Case
 }

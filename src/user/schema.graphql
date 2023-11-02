@@ -1,3 +1,11 @@
+type avatar_images {
+  avatar_id: String!
+  gender: String
+  age_range: String
+  etnicity: String
+  image_url: String
+}
+
 type User {
   id: ID!
   firstName: String
@@ -9,6 +17,8 @@ type User {
   age: Int
   gender: String
   avatar: String
+  avatar_imagesAvatar_id: String
+  avatarImage: avatar_images
   roleRef: Role
 }
 

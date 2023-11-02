@@ -27,7 +27,11 @@ const roomResolvers: Resolvers = {
       return roomService.createRoom(input as InputRoom)
     },
 
-    addUsersToRoom: async (_, { userRoomInput: { userIds, roomId } }, context) => {
+    addUsersToRoom: async (
+      _,
+      { userRoomInput: { userIds, roomId } },
+      context
+    ) => {
       const { id } = isAuth(context)
 
       if (!(await roomService.isOwnerRoom(id.toString(), roomId))) {
@@ -35,6 +39,10 @@ const roomResolvers: Resolvers = {
       }
 
       return roomService.addUsersToRooms(userIds as string[], roomId)
+    },
+
+    addUserToRooms: async (_, { userId, roomIds }) => {
+      return roomService.addUserToRooms(userId, roomIds)
     }
   }
 }

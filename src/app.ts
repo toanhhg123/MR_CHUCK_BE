@@ -1,8 +1,8 @@
 import { expressMiddleware } from '@apollo/server/express4'
 import cors from 'cors'
 import express from 'express'
-import serverApollo from './apollo'
 import uploadRouter from '~/api/upload/upload.route'
+import serverApollo from './apollo'
 
 const server = async () => {
   const app = express()

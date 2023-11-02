@@ -22,8 +22,12 @@ export const authResolves: Resolvers = {
       }
     },
 
-    register: async (_, { input: { email, password, firstName, lastName } }) => {
-      if (await userService.getByEmail(email)) throw new Error('email is exist !!')
+    register: async (
+      _,
+      { input: { email, password, firstName, lastName } }
+    ) => {
+      if (await userService.getByEmail(email))
+        throw new Error('email is exist !!')
 
       await userService.createUser({
         username: email.split('@').at(0)!,

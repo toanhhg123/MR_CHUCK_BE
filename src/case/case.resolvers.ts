@@ -25,10 +25,16 @@ const caseResolvers: Resolvers = {
   Mutation: {
     createCase: async (_, { caseInput }, context) => {
       const { id } = isAuth(context)
-      const caseCreated = await caseService.createCase(caseInput as CaseInput, id.toString())
+      const caseCreated = await caseService.createCase(
+        caseInput as CaseInput,
+        id.toString()
+      )
 
       if (caseCreated) {
-        await caseService.createUserCase({ caseId: caseCreated.id, userIds: [id.toString()] })
+        await caseService.createUserCase({
+          caseId: caseCreated.id,
+          userIds: [id.toString()]
+        })
       }
 
       return caseCreated
@@ -55,6 +61,16 @@ const caseResolvers: Resolvers = {
       if (!caseCreated) throw new Error('user not owner')
 
       return caseCreated
+    },
+
+    addJunrorToCase: async (_, { caseId, num }, context) => {
+      const { id } = isAuth(context)
+
+      if (!(await caseService.isOwnerCase(id.toString(), caseId))) {
+        throw new Error('user not owner')
+      }
+
+      return caseService.addJunrorsToCase(num, caseId)
     }
   },
 
@@ -63,7 +79,9 @@ const caseResolvers: Resolvers = {
       return rooms ? rooms : roomService.getRoomByCaseId(id.toString())
     },
     messageCases: ({ messageCases, id }) => {
-      return messageCases ? messageCases : messageCaseService.getByCaseId(id.toString())
+      return messageCases
+        ? messageCases
+        : messageCaseService.getByCaseId(id.toString())
     }
   }
 }

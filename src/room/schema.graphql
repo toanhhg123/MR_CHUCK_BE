@@ -53,4 +53,5 @@ type Query {
 type Mutation {
   createRoom(input: InputRoom!): Room
   addUsersToRoom(userRoomInput: UserRoomInput!): Int
+  addUserToRooms(userId: String!, roomIds: [String!]!): Int
 }

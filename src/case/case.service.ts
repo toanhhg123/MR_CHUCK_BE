@@ -1,4 +1,8 @@
-import { CaseInput, CaseInputUpdate, UserCaseInput } from '~/SchemaGraphql/types.generated'
+import {
+  CaseInput,
+  CaseInputUpdate,
+  UserCaseInput
+} from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
 import _ from 'lodash'
 import { Case } from '@prisma/client'
@@ -82,7 +86,13 @@ export class CaseService {
       where: { id },
       include: {
         userCases: {
-          include: { user: true }
+          include: {
+            user: {
+              include: {
+                avatarImage: true
+              }
+            }
+          }
         },
         userCreated: true
       }
@@ -90,7 +100,9 @@ export class CaseService {
   }
 
   async createUserCase(input: UserCaseInput) {
-    const userCasesDb = await userCase.findMany({ where: { caseId: input.caseId } })
+    const userCasesDb = await userCase.findMany({
+      where: { caseId: input.caseId }
+    })
 
     const userIdInserts = input.userIds.filter((id) => {
       return !userCasesDb.find((userCase) => userCase.userId === id)
@@ -106,8 +118,30 @@ export class CaseService {
   }
 
   updateCase(caseId: string, input: CaseInputUpdate) {
-    if (input.sjqSubmissionDate) input.sjqSubmissionDate = new Date(input.sjqSubmissionDate)
+    if (input.sjqSubmissionDate)
+      input.sjqSubmissionDate = new Date(input.sjqSubmissionDate)
     return CaseModel.update({ data: input as Case, where: { id: caseId } })
+  }
+
+  async addJunrorsToCase(num: number, caseId: string) {
+    const [userJunrors, userCases] = await Promise.all([
+      prisma.user.findMany({ where: { role: 'JUROR' } }),
+      prisma.userCase.findMany({ where: { caseId } })
+    ])
+
+    const userCaseIds = userCases.map((user) => user.userId)
+
+    const usersNotInCases = userJunrors.filter(
+      (userJunror) => !userCaseIds.includes(userJunror.id)
+    )
+
+    await prisma.userCase.createMany({
+      data: usersNotInCases
+        .slice(0, num)
+        .map((user) => ({ caseId, userId: user.id }))
+    })
+
+    return this.getCaseById(caseId)
   }
 }
 

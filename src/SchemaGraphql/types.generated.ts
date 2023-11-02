@@ -183,7 +183,9 @@ export type MessageCaseInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addJunrorToCase?: Maybe<Case>;
   addUserToCase?: Maybe<Case>;
+  addUserToRooms?: Maybe<Scalars['Int']['output']>;
   addUsersToRoom?: Maybe<Scalars['Int']['output']>;
   createCase?: Maybe<Case>;
   createLocation?: Maybe<Location>;
@@ -198,8 +200,20 @@ export type Mutation = {
 };
 
 
+export type MutationaddJunrorToCaseArgs = {
+  caseId: Scalars['String']['input'];
+  num: Scalars['Int']['input'];
+};
+
+
 export type MutationaddUserToCaseArgs = {
   input: UserCaseInput;
+};
+
+
+export type MutationaddUserToRoomsArgs = {
+  roomIds: Array<Scalars['String']['input']>;
+  userId: Scalars['String']['input'];
 };
 
 
@@ -321,6 +335,8 @@ export type User = {
   __typename?: 'User';
   age?: Maybe<Scalars['Int']['output']>;
   avatar?: Maybe<Scalars['String']['output']>;
+  avatarImage?: Maybe<avatar_images>;
+  avatar_imagesAvatar_id?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
   firstName?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
@@ -377,6 +393,15 @@ export type UserRoom = {
 export type UserRoomInput = {
   roomId: Scalars['String']['input'];
   userIds: Array<InputMaybe<Scalars['String']['input']>>;
+};
+
+export type avatar_images = {
+  __typename?: 'avatar_images';
+  age_range?: Maybe<Scalars['String']['output']>;
+  avatar_id: Scalars['String']['output'];
+  etnicity?: Maybe<Scalars['String']['output']>;
+  gender?: Maybe<Scalars['String']['output']>;
+  image_url?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -484,6 +509,7 @@ export type ResolversTypes = {
   UserRequestLogin: UserRequestLogin;
   UserRoom: ResolverTypeWrapper<UserRoom>;
   UserRoomInput: UserRoomInput;
+  avatar_images: ResolverTypeWrapper<avatar_images>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 };
 
@@ -516,6 +542,7 @@ export type ResolversParentTypes = {
   UserRequestLogin: UserRequestLogin;
   UserRoom: UserRoom;
   UserRoomInput: UserRoomInput;
+  avatar_images: avatar_images;
   Boolean: Scalars['Boolean']['output'];
 };
 
@@ -593,7 +620,9 @@ export type MessageCaseResolvers<ContextType = any, ParentType extends Resolvers
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  addJunrorToCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationaddJunrorToCaseArgs, 'caseId' | 'num'>>;
   addUserToCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationaddUserToCaseArgs, 'input'>>;
+  addUserToRooms?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationaddUserToRoomsArgs, 'roomIds' | 'userId'>>;
   addUsersToRoom?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationaddUsersToRoomArgs, 'userRoomInput'>>;
   createCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationcreateCaseArgs, 'caseInput'>>;
   createLocation?: Resolver<Maybe<ResolversTypes['Location']>, ParentType, ContextType, RequireFields<MutationcreateLocationArgs, 'input'>>;
@@ -643,6 +672,8 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   age?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   avatar?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  avatarImage?: Resolver<Maybe<ResolversTypes['avatar_images']>, ParentType, ContextType>;
+  avatar_imagesAvatar_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -678,6 +709,15 @@ export type UserRoomResolvers<ContextType = any, ParentType extends ResolversPar
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type avatar_imagesResolvers<ContextType = any, ParentType extends ResolversParentTypes['avatar_images'] = ResolversParentTypes['avatar_images']> = {
+  age_range?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  avatar_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  etnicity?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  image_url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   AuthResponse?: AuthResponseResolvers<ContextType>;
   Case?: CaseResolvers<ContextType>;
@@ -692,5 +732,6 @@ export type Resolvers<ContextType = any> = {
   User?: UserResolvers<ContextType>;
   UserCase?: UserCaseResolvers<ContextType>;
   UserRoom?: UserRoomResolvers<ContextType>;
+  avatar_images?: avatar_imagesResolvers<ContextType>;
 };
 

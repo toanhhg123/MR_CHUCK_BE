@@ -18,7 +18,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       status: 'success'
     })
   } catch (err: any) {
-    return res.status(400).json({ error: err.message })
+    return res.status(400).json({ error: err.message || err })
   }
 })
 
@@ -32,7 +32,7 @@ router.post('/delete', async (req, res) => {
       status: 'success'
     })
   } catch (err: any) {
-    return res.status(400).json({ error: err.message })
+    return res.status(400).json({ error: err.message || err })
   }
 })
 

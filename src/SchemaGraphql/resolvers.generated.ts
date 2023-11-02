@@ -6,7 +6,9 @@ import    { Date } from './room/resolvers/Date';
 import    { Location } from './location/resolvers/Location';
 import    { Message } from './message/resolvers/Message';
 import    { MessageCase } from './messageCase/resolvers/MessageCase';
+import    { addJunrorToCase as Mutation_addJunrorToCase } from './case/resolvers/Mutation/addJunrorToCase';
 import    { addUserToCase as Mutation_addUserToCase } from './case/resolvers/Mutation/addUserToCase';
+import    { addUserToRooms as Mutation_addUserToRooms } from './room/resolvers/Mutation/addUserToRooms';
 import    { addUsersToRoom as Mutation_addUsersToRoom } from './room/resolvers/Mutation/addUsersToRoom';
 import    { createCase as Mutation_createCase } from './case/resolvers/Mutation/createCase';
 import    { createLocation as Mutation_createLocation } from './location/resolvers/Mutation/createLocation';
@@ -34,9 +36,10 @@ import    { Room } from './room/resolvers/Room';
 import    { User } from './user/resolvers/User';
 import    { UserCase } from './case/resolvers/UserCase';
 import    { UserRoom } from './room/resolvers/UserRoom';
+import    { avatar_images } from './user/resolvers/avatar_images';
     export const resolvers: Resolvers = {
       Query: { getCaseById: Query_getCaseById,getCases: Query_getCases,getLocations: Query_getLocations,getMe: Query_getMe,getMessageByRoomId: Query_getMessageByRoomId,getMyCases: Query_getMyCases,getRoles: Query_getRoles,getRoomsByCaseId: Query_getRoomsByCaseId,getUser: Query_getUser,getUsers: Query_getUsers,searchUser: Query_searchUser },
-      Mutation: { addUserToCase: Mutation_addUserToCase,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register,updateCase: Mutation_updateCase },
+      Mutation: { addJunrorToCase: Mutation_addJunrorToCase,addUserToCase: Mutation_addUserToCase,addUserToRooms: Mutation_addUserToRooms,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register,updateCase: Mutation_updateCase },
       
       AuthResponse: AuthResponse,
 Case: Case,
@@ -48,5 +51,6 @@ Role: Role,
 Room: Room,
 User: User,
 UserCase: UserCase,
-UserRoom: UserRoom
+UserRoom: UserRoom,
+avatar_images: avatar_images
     }

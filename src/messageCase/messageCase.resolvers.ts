@@ -7,7 +7,8 @@ const messageCaseResolver: Resolvers = {
   Mutation: {
     createMessageCase: async (_, { input }, context) => {
       const { id } = isAuth(context)
-      if (!(await caseService.isMemberInCase(input.caseId, id.toString()))) throw new Error('user is not member')
+      if (!(await caseService.isMemberInCase(input.caseId, id.toString())))
+        throw new Error('user is not member')
 
       return messageCaseService.create(id.toString(), input as MessageCaseInput)
     }
