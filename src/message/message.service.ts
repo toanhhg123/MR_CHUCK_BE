@@ -1,4 +1,4 @@
-import { MessageCaseInput } from '~/SchemaGraphql/types.generated'
+import { MessageRoomInput } from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
 
 const { message } = prisma
@@ -18,7 +18,7 @@ export class MessageService {
     })
   }
 
-  createMessage(input: MessageCaseInput, senderId: string) {
+  createMessage(input: MessageRoomInput, senderId: string) {
     return message.create({
       data: {
         ...input,

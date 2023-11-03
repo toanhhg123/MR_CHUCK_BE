@@ -179,6 +179,11 @@ export type MessageCaseInput = {
   caseId: Scalars['String']['input'];
   message: Scalars['String']['input'];
   replyId?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type MessageRoomInput = {
+  message: Scalars['String']['input'];
+  replyId?: InputMaybe<Scalars['String']['input']>;
   roomId: Scalars['String']['input'];
 };
 
@@ -270,7 +275,7 @@ export type MutationregisterArgs = {
 
 
 export type MutationsendMessageToRoomArgs = {
-  input: MessageCaseInput;
+  input: MessageRoomInput;
 };
 
 
@@ -506,6 +511,7 @@ export type ResolversTypes = {
   Message: ResolverTypeWrapper<Message>;
   MessageCase: ResolverTypeWrapper<MessageCase>;
   MessageCaseInput: MessageCaseInput;
+  MessageRoomInput: MessageRoomInput;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
@@ -539,6 +545,7 @@ export type ResolversParentTypes = {
   Message: Message;
   MessageCase: MessageCase;
   MessageCaseInput: MessageCaseInput;
+  MessageRoomInput: MessageRoomInput;
   Mutation: {};
   Query: {};
   Role: Role;
