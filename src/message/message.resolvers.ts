@@ -16,7 +16,17 @@ export const messageResolvers: Resolvers = {
     }
   },
 
-  Mutation: {},
+  Mutation: {
+    sendMessageToRoom: async (_, { input }, context) => {
+      const { id } = isAuth(context)
+
+      if (!(await roomService.isMemberInRoom(id.toString(), input.roomId))) {
+        throw new Error('you is not member in room')
+      }
+
+      return await messageService.createMessage(input, id.toString())
+    }
+  },
 
   Message: {
     room: ({ room, roomId }) => {

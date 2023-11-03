@@ -1,13 +1,12 @@
-import _ from 'lodash'
 import { Resolvers } from '~/SchemaGraphql/types.generated'
+import { isAuth } from '~/auth/auth.guard'
 import roleService from '~/role/role.service'
 import userService from './user.service'
-import { isAdmin } from '~/auth/auth.guard'
 
 export const userResolvers: Resolvers = {
   Query: {
     getUsers: async (_, __, context) => {
-      isAdmin(context)
+      isAuth(context)
 
       const users = await userService.getUsers()
       return users
