@@ -48,6 +48,7 @@ input UserRoomInput {
 
 type Query {
   getRoomsByCaseId(caseId: String!): [Room]
+  getRoomById(roomId: String): Room
 }
 
 type Mutation {

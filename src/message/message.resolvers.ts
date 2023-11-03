@@ -23,7 +23,6 @@ export const messageResolvers: Resolvers = {
       if (!(await roomService.isMemberInRoom(id.toString(), input.roomId))) {
         throw new Error('you is not member in room')
       }
-
       return await messageService.createMessage(input, id.toString())
     }
   },

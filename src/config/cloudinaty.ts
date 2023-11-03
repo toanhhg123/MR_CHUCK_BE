@@ -16,7 +16,7 @@ cloudinary.config({
 export const uploadToCloudinary = (file: Express.Multer.File) => {
   return new Promise<UploadApiResponse>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
-      { folder: CLOUDINARY_FOLDER_NAME },
+      { folder: CLOUDINARY_FOLDER_NAME, resource_type: 'raw' },
       (error, result) => {
         if (result) {
           resolve(result)
