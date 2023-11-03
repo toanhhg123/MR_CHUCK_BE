@@ -18,7 +18,6 @@ type UserRoom {
   userId: String!
   user: User!
   memberType: EMemberInRoom!
-
   createdAt: Date
   updatedAt: Date
 }
@@ -30,6 +29,7 @@ type Room {
   case: Case
   type: ETypeRoom!
   userRooms: [UserRoom]!
+  messages: [Message]
 
   createdAt: Date
   updatedAt: Date

@@ -19,6 +19,7 @@ import    { createUser as Mutation_createUser } from './user/resolvers/Mutation/
 import    { deleteUser as Mutation_deleteUser } from './user/resolvers/Mutation/deleteUser';
 import    { login as Mutation_login } from './auth/resolvers/Mutation/login';
 import    { register as Mutation_register } from './auth/resolvers/Mutation/register';
+import    { sendMessageToRoom as Mutation_sendMessageToRoom } from './message/resolvers/Mutation/sendMessageToRoom';
 import    { updateCase as Mutation_updateCase } from './case/resolvers/Mutation/updateCase';
 import    { getCaseById as Query_getCaseById } from './case/resolvers/Query/getCaseById';
 import    { getCases as Query_getCases } from './case/resolvers/Query/getCases';
@@ -39,7 +40,7 @@ import    { UserRoom } from './room/resolvers/UserRoom';
 import    { avatar_images } from './user/resolvers/avatar_images';
     export const resolvers: Resolvers = {
       Query: { getCaseById: Query_getCaseById,getCases: Query_getCases,getLocations: Query_getLocations,getMe: Query_getMe,getMessageByRoomId: Query_getMessageByRoomId,getMyCases: Query_getMyCases,getRoles: Query_getRoles,getRoomsByCaseId: Query_getRoomsByCaseId,getUser: Query_getUser,getUsers: Query_getUsers,searchUser: Query_searchUser },
-      Mutation: { addJunrorToCase: Mutation_addJunrorToCase,addUserToCase: Mutation_addUserToCase,addUserToRooms: Mutation_addUserToRooms,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register,updateCase: Mutation_updateCase },
+      Mutation: { addJunrorToCase: Mutation_addJunrorToCase,addUserToCase: Mutation_addUserToCase,addUserToRooms: Mutation_addUserToRooms,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register,sendMessageToRoom: Mutation_sendMessageToRoom,updateCase: Mutation_updateCase },
       
       AuthResponse: AuthResponse,
 Case: Case,

@@ -179,6 +179,7 @@ export type MessageCaseInput = {
   caseId: Scalars['String']['input'];
   message: Scalars['String']['input'];
   replyId?: InputMaybe<Scalars['String']['input']>;
+  roomId: Scalars['String']['input'];
 };
 
 export type Mutation = {
@@ -196,6 +197,7 @@ export type Mutation = {
   deleteUser?: Maybe<Scalars['ID']['output']>;
   login: AuthResponse;
   register: AuthResponse;
+  sendMessageToRoom?: Maybe<Message>;
   updateCase?: Maybe<Case>;
 };
 
@@ -267,6 +269,11 @@ export type MutationregisterArgs = {
 };
 
 
+export type MutationsendMessageToRoomArgs = {
+  input: MessageCaseInput;
+};
+
+
 export type MutationupdateCaseArgs = {
   caseId: Scalars['String']['input'];
   input: CaseInputUpdate;
@@ -325,6 +332,7 @@ export type Room = {
   caseId: Scalars['String']['output'];
   createdAt?: Maybe<Scalars['Date']['output']>;
   id: Scalars['ID']['output'];
+  messages?: Maybe<Array<Maybe<Message>>>;
   name: Scalars['String']['output'];
   type: ETypeRoom;
   updatedAt?: Maybe<Scalars['Date']['output']>;
@@ -633,6 +641,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteUser?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType, RequireFields<MutationdeleteUserArgs, 'id'>>;
   login?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationloginArgs, 'authRequest'>>;
   register?: Resolver<ResolversTypes['AuthResponse'], ParentType, ContextType, RequireFields<MutationregisterArgs, 'input'>>;
+  sendMessageToRoom?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<MutationsendMessageToRoomArgs, 'input'>>;
   updateCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationupdateCaseArgs, 'caseId' | 'input'>>;
 };
 
@@ -662,6 +671,7 @@ export type RoomResolvers<ContextType = any, ParentType extends ResolversParentT
   caseId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  messages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['ETypeRoom'], ParentType, ContextType>;
   updatedAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;

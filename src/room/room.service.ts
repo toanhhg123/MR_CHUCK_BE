@@ -79,6 +79,12 @@ export class RoomService {
           include: {
             user: true
           }
+        },
+        messages: {
+          include: {
+            sender: true,
+            replies: true
+          }
         }
       }
     })

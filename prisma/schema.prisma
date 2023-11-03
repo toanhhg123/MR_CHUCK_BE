@@ -96,7 +96,7 @@ model Room {
   name      String
   createdAt DateTime   @default(now())
   updatedAt DateTime   @default(now())
-  Message   Message[]
+  messages  Message[]
   case      Case       @relation(fields: [caseId], references: [id])
   userRooms UserRoom[]
 }

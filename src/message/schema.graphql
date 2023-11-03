@@ -16,3 +16,13 @@ type Message {
 type Query {
   getMessageByRoomId(roomId: String!): [Message]
 }
+
+input MessageCaseInput {
+  replyId: String
+  message: String!
+  roomId: String!
+}
+
+type Mutation {
+  sendMessageToRoom(input: MessageCaseInput!): Message
+}
