@@ -41,6 +41,13 @@ export class CaseService {
                 }
               }
             }
+          },
+          {
+            userCases: {
+              some: {
+                userId: userId
+              }
+            }
           }
         ]
       },
