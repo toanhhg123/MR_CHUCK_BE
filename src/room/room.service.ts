@@ -9,6 +9,13 @@ export class RoomService {
     return isExist ? true : false
   }
 
+  async isAllInRoom(userIds: string[], roomId: string) {
+    const all = await userRoom.findMany({
+      where: { OR: userIds.map((userId) => ({ roomId, userId })) }
+    })
+    return all.length === userIds.length ? true : false
+  }
+
   async isOwnerRoom(userId: string, roomId: string) {
     const isExist = await userRoom.findFirst({
       where: { roomId, userId, memberType: 'OWNER' }
@@ -32,7 +39,11 @@ export class RoomService {
     const { userCreatedId } = roomDb.case
 
     await userRoom.create({
-      data: { userId: userCreatedId, roomId: roomDb.id, memberType: 'OWNER' }
+      data: {
+        userId: userCreatedId,
+        roomId: roomDb.id,
+        memberType: 'OWNER'
+      }
     })
 
     return roomDb
@@ -71,9 +82,32 @@ export class RoomService {
     return roomIds.length
   }
 
-  getRoomByCaseId(caseId: string) {
+  getRoomsByCaseId(caseId: string) {
     return room.findMany({
       where: { caseId },
+      include: {
+        userRooms: {
+          include: {
+            user: true
+          }
+        },
+        messages: {
+          include: {
+            sender: true,
+            replies: {
+              include: {
+                sender: true
+              }
+            }
+          }
+        }
+      }
+    })
+  }
+
+  getRoomById(id: string) {
+    return room.findFirst({
+      where: { id },
       include: {
         userRooms: {
           include: {
@@ -90,17 +124,54 @@ export class RoomService {
     })
   }
 
-  getRoomById(id: string) {
-    return room.findFirst({
-      where: { id },
-      include: {
-        userRooms: {
-          include: {
-            user: true
-          }
+  async getRoomBoxByUserId(myId: string, userId: string, caseId: string) {
+    const include = {
+      userRooms: {
+        include: {
+          user: true
+        }
+      },
+      messages: {
+        include: {
+          sender: true,
+          replies: true
         }
       }
+    }
+
+    let roomDb = await room.findFirst({
+      where: {
+        caseId,
+        type: 'BOX',
+        userRooms: {
+          some: {
+            OR: [
+              {
+                userId
+              },
+              { userId: myId }
+            ]
+          }
+        }
+      },
+      include
     })
+
+    if (!roomDb) {
+      roomDb = await room.create({
+        data: {
+          caseId,
+          type: 'BOX',
+          name: `box ${myId} ---- ${userId}`,
+          userRooms: {
+            create: [{ userId }, { userId: myId }]
+          }
+        },
+        include
+      })
+    }
+
+    return roomDb
   }
 }
 

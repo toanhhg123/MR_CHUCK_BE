@@ -19,6 +19,13 @@ export class CaseService {
     })
   }
 
+  async isAllInCase(userIds: string[], caseId: string) {
+    const all = await userCase.findMany({
+      where: { OR: userIds.map((userId) => ({ caseId, userId })) }
+    })
+    return all.length === userIds.length ? true : false
+  }
+
   async isOwnerCase(userCreatedId: string, caseId: string) {
     const isExsit = await CaseModel.findFirst({
       where: { userCreatedId, id: caseId }

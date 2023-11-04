@@ -15,7 +15,9 @@ export class MessageCase {
     return messageCase.findMany({
       where: { caseId },
       include: {
-        replies: true,
+        replies: {
+          include: { sender: true }
+        },
         reply: true,
         sender: true
       },

@@ -16,10 +16,10 @@
         "arrowParens": "always",
         "semi": false,
         "trailingComma": "none",
-        "tabWidth": 2,
         "endOfLine": "auto",
         "useTabs": false,
         "singleQuote": true,
+        "tabWidth": 2,
         "printWidth": 80,
         "jsxSingleQuote": true
       }

@@ -12,7 +12,34 @@ const roomResolvers: Resolvers = {
         throw new Error('not found case for user')
       }
 
-      return roomService.getRoomByCaseId(caseId)
+      return roomService.getRoomsByCaseId(caseId)
+    },
+
+    getRoomById: async (_, { roomId }, context) => {
+      const { id } = isAuth(context)
+      const room = await roomService.getRoomById(roomId.toString())
+
+      if (!room) throw new Error('not found room')
+
+      if (!(await caseService.isMemberInCase(room.caseId, id.toString()))) {
+        throw new Error('user is not owner')
+      }
+
+      return room
+    },
+
+    getRoomBoxByUserId: async (_, { userId, caseId }, context) => {
+      const { id } = isAuth(context)
+
+      const isAllow = await Promise.all([
+        caseService.isMemberInCase(caseId, userId),
+        caseService.isMemberInCase(caseId, id.toString())
+      ])
+
+      if (!isAllow[0] || !isAllow[1])
+        throw new Error(`you or user selected not is member in case ${id}`)
+
+      return roomService.getRoomBoxByUserId(id.toString(), userId, caseId)
     }
   },
 
@@ -33,6 +60,16 @@ const roomResolvers: Resolvers = {
       context
     ) => {
       const { id } = isAuth(context)
+
+      const room = await roomService.getRoomById(roomId)
+
+      if (!room) throw new Error('room not found')
+
+      if (!(await caseService.isAllInCase(userIds as string[], room.caseId))) {
+        throw new Error(
+          'exsit user in list userIds send request is not member in case'
+        )
+      }
 
       if (!(await roomService.isOwnerRoom(id.toString(), roomId))) {
         throw new Error('user is not owner')

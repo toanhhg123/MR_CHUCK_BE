@@ -76,7 +76,7 @@ const caseResolvers: Resolvers = {
 
   Case: {
     rooms: ({ rooms, id }) => {
-      return rooms ? rooms : roomService.getRoomByCaseId(id.toString())
+      return rooms ? rooms : roomService.getRoomsByCaseId(id.toString())
     },
     messageCases: ({ messageCases, id }) => {
       return messageCases

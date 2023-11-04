@@ -293,6 +293,7 @@ export type Query = {
   getMessageByRoomId?: Maybe<Array<Maybe<Message>>>;
   getMyCases?: Maybe<Array<Maybe<Case>>>;
   getRoles?: Maybe<Array<Maybe<Role>>>;
+  getRoomBoxByUserId?: Maybe<Room>;
   getRoomById?: Maybe<Room>;
   getRoomsByCaseId?: Maybe<Array<Maybe<Room>>>;
   getUser?: Maybe<User>;
@@ -311,8 +312,14 @@ export type QuerygetMessageByRoomIdArgs = {
 };
 
 
+export type QuerygetRoomBoxByUserIdArgs = {
+  caseId: Scalars['String']['input'];
+  userId: Scalars['String']['input'];
+};
+
+
 export type QuerygetRoomByIdArgs = {
-  roomId?: InputMaybe<Scalars['String']['input']>;
+  roomId: Scalars['String']['input'];
 };
 
 
@@ -666,7 +673,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMessageByRoomId?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType, RequireFields<QuerygetMessageByRoomIdArgs, 'roomId'>>;
   getMyCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['Case']>>>, ParentType, ContextType>;
   getRoles?: Resolver<Maybe<Array<Maybe<ResolversTypes['Role']>>>, ParentType, ContextType>;
-  getRoomById?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, Partial<QuerygetRoomByIdArgs>>;
+  getRoomBoxByUserId?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QuerygetRoomBoxByUserIdArgs, 'caseId' | 'userId'>>;
+  getRoomById?: Resolver<Maybe<ResolversTypes['Room']>, ParentType, ContextType, RequireFields<QuerygetRoomByIdArgs, 'roomId'>>;
   getRoomsByCaseId?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType, RequireFields<QuerygetRoomsByCaseIdArgs, 'caseId'>>;
   getUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QuerygetUserArgs, 'id'>>;
   getUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
