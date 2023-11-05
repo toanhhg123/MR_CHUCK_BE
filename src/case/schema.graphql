@@ -106,7 +106,7 @@ type Query {
 }
 
 input OptionAddJunror {
-  type: ECASE_TYPE
+  paidVersion: EPAD_VERSION
   gender: String
   ageRange: [Int!]
   raceOrEthnicity: EUserRaceAndEthnicity

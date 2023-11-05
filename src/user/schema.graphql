@@ -9,6 +9,11 @@ enum EUserRaceAndEthnicity {
   HISPANIC_OR_LATINO
 }
 
+enum EPAD_VERSION {
+  FREE
+  PAID
+}
+
 type avatar_images {
   avatar_id: String!
   gender: String
@@ -31,6 +36,7 @@ type User {
   avatar_imagesAvatar_id: String
   avatarImage: avatar_images
   roleRef: Role
+  paidVersion: EPAD_VERSION
   etnicity: EUserRaceAndEthnicity
 }
 

@@ -298,8 +298,8 @@ export type MutationupdateCaseArgs = {
 export type OptionAddJunror = {
   ageRange?: InputMaybe<Array<Scalars['Int']['input']>>;
   gender?: InputMaybe<Scalars['String']['input']>;
+  paidVersion?: InputMaybe<EPAD_VERSION>;
   raceOrEthnicity?: InputMaybe<EUserRaceAndEthnicity>;
-  type?: InputMaybe<ECASE_TYPE>;
 };
 
 export type Query = {
@@ -387,6 +387,7 @@ export type User = {
   gender?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   lastName?: Maybe<Scalars['String']['output']>;
+  paidVersion?: Maybe<EPAD_VERSION>;
   password: Scalars['String']['output'];
   role: ERole;
   roleRef?: Maybe<Role>;
@@ -734,6 +735,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  paidVersion?: Resolver<Maybe<ResolversTypes['EPAD_VERSION']>, ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   role?: Resolver<ResolversTypes['ERole'], ParentType, ContextType>;
   roleRef?: Resolver<Maybe<ResolversTypes['Role']>, ParentType, ContextType>;

@@ -17,6 +17,7 @@ const roomResolvers: Resolvers = {
 
     getRoomById: async (_, { roomId }, context) => {
       const { id } = isAuth(context)
+
       const room = await roomService.getRoomById(roomId.toString())
 
       if (!room) throw new Error('not found room')

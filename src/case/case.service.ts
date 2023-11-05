@@ -1,6 +1,7 @@
 import {
   CaseInput,
   CaseInputUpdate,
+  OptionAddJunror,
   UserCaseInput
 } from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
@@ -15,6 +16,9 @@ export class CaseService {
       where: { userCreatedId },
       include: {
         location: true
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     })
   }
@@ -67,6 +71,9 @@ export class CaseService {
             }
           }
         }
+      },
+      orderBy: {
+        createdAt: 'desc'
       }
     })
   }
@@ -101,11 +108,7 @@ export class CaseService {
       include: {
         userCases: {
           include: {
-            user: {
-              include: {
-                avatarImage: true
-              }
-            }
+            user: {}
           }
         },
         userCreated: true
@@ -158,12 +161,32 @@ export class CaseService {
     return this.getCaseById(caseId)
   }
 
-  async addJunrorsVersionPaidToCase(num: number, caseId: string) {
+  async addJunrorsVersionPaidToCase(
+    num: number,
+    caseId: string,
+    option: OptionAddJunror
+  ) {
     const userCases = await prisma.userCase.findMany({ where: { caseId } })
+
+    option = _.omitBy(option, _.isNil)
+
+    const { ageRange, raceOrEthnicity, ...restOption } = option
+
+    let ageFillter = undefined
+
+    if (ageRange) {
+      ageFillter = {
+        gte: ageRange[0],
+        lte: ageRange[1]
+      }
+    }
 
     const usersVersionPaid = await prisma.user.findMany({
       where: {
+        ...restOption,
+        etnicity: raceOrEthnicity,
         paidVersion: 'PAID',
+        age: ageFillter,
         id: {
           notIn: userCases.map((user) => user.userId)
         }

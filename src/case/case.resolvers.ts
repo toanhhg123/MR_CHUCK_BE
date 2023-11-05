@@ -1,8 +1,8 @@
 import { CaseInput, Resolvers } from '~/SchemaGraphql/types.generated'
 import { isAuth } from '~/auth/auth.guard'
-import caseService from './case.service'
-import roomService from '~/room/room.service'
 import messageCaseService from '~/messageCase/messageCase.service'
+import roomService from '~/room/room.service'
+import caseService from './case.service'
 
 const caseResolvers: Resolvers = {
   Query: {
@@ -56,6 +56,7 @@ const caseResolvers: Resolvers = {
       if (!(await caseService.isOwnerCase(id.toString(), input.caseId))) {
         throw new Error('user not owner')
       }
+
       const caseCreated = await caseService.createUserCase(input)
 
       if (!caseCreated) throw new Error('user not owner')
@@ -63,14 +64,23 @@ const caseResolvers: Resolvers = {
       return caseCreated
     },
 
-    addJunrorToCase: async (_, { caseId, num }, context) => {
+    addJunrorToCase: async (_, { caseId, num, optionAddJunror }, context) => {
+      optionAddJunror = { ...optionAddJunror }
       const { id } = isAuth(context)
 
       if (!(await caseService.isOwnerCase(id.toString(), caseId))) {
         throw new Error('user not owner')
       }
 
-      return caseService.addJunrorsVersionFreeToCase(num, caseId)
+      if (optionAddJunror.paidVersion === 'FREE')
+        return caseService.addJunrorsVersionFreeToCase(num, caseId)
+
+      if (optionAddJunror.paidVersion === 'PAID')
+        return caseService.addJunrorsVersionPaidToCase(
+          num,
+          caseId,
+          optionAddJunror
+        )
     }
   },
 

@@ -12,25 +12,18 @@ export function createRandomUserJuror(): User {
     age: faker.number.int({ min: 10, max: 80 }),
     role: 'JUROR',
     paidVersion: faker.helpers.enumValue(EPAD_VERSION),
-    firstName: faker.name.firstName(),
-    lastName: faker.name.lastName(),
-    avatar_imagesAvatar_id: '',
+    firstName: faker.person.firstName(),
+    lastName: faker.person.lastName(),
     gender: faker.person.sex(),
+    avatar_imagesAvatar_id: null,
     etnicity: faker.helpers.enumValue(EUserRaceAndEthnicity)
   }
 }
 
 export const randomUserAvatar = async () => {
-  const userAvatars = await prisma.avatar_images.findMany()
-
   const users = faker.helpers.multiple(createRandomUserJuror, {
-    count: userAvatars.length
+    count: 1000
   })
-
-  users.forEach(
-    (user, index) =>
-      (user.avatar_imagesAvatar_id = userAvatars[index].avatar_id)
-  )
 
   const usersDb = await prisma.user.createMany({ data: users })
   console.log(usersDb)
