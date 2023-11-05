@@ -13,19 +13,20 @@ model Role {
 }
 
 model User {
-  id                     String         @id @default(uuid())
+  id                     String                 @id @default(uuid())
   username               String
   firstName              String?
   lastName               String?
-  email                  String         @unique
+  email                  String                 @unique
   password               String
   role                   ERole
   age                    Int?
   avatar                 String?
   gender                 String?
   paidVersion            EPAD_VERSION?
+  etnicity               EUserRaceAndEthnicity?
   avatar_imagesAvatar_id String?
-  avatarImage            avatar_images? @relation(fields: [avatar_imagesAvatar_id], references: [avatar_id])
+  avatarImage            avatar_images?         @relation(fields: [avatar_imagesAvatar_id], references: [avatar_id])
   Case                   Case[]
   Message                Message[]
   UserCase               UserCase[]
@@ -182,4 +183,15 @@ enum EMemberInMessageBox {
   MEMBER
   OWNER
   DEPUTY
+}
+
+enum EUserRaceAndEthnicity {
+  ASIAN
+  BLACK
+  WHITE
+  INDIAN
+  MIDDLE_EASTERN
+  PACIFIC_ISLANDER
+  AFRICAN_OR_Black
+  HISPANIC_OR_LATINO
 }

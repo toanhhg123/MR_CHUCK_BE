@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker'
-import { User } from '@prisma/client'
+import { EPAD_VERSION, EUserRaceAndEthnicity, User } from '@prisma/client'
+import prisma from '~/config/db'
 
 export function createRandomUserJuror(): User {
   return {
@@ -10,26 +11,27 @@ export function createRandomUserJuror(): User {
     password: faker.internet.password(),
     age: faker.number.int({ min: 10, max: 80 }),
     role: 'JUROR',
-    paidVersion: 'FREE',
+    paidVersion: faker.helpers.enumValue(EPAD_VERSION),
     firstName: faker.name.firstName(),
     lastName: faker.name.lastName(),
     avatar_imagesAvatar_id: '',
-    gender: faker.person.sex()
+    gender: faker.person.sex(),
+    etnicity: faker.helpers.enumValue(EUserRaceAndEthnicity)
   }
 }
 
-// const randomUserAvatar = async () => {
-//   const userAvatars = await prisma.avatar_images.findMany()
+export const randomUserAvatar = async () => {
+  const userAvatars = await prisma.avatar_images.findMany()
 
-//   const users = faker.helpers.multiple(createRandomUserJuror, {
-//     count: userAvatars.length
-//   })
+  const users = faker.helpers.multiple(createRandomUserJuror, {
+    count: userAvatars.length
+  })
 
-//   users.forEach(
-//     (user, index) =>
-//       (user.avatar_imagesAvatar_id = userAvatars[index].avatar_id)
-//   )
+  users.forEach(
+    (user, index) =>
+      (user.avatar_imagesAvatar_id = userAvatars[index].avatar_id)
+  )
 
-//   const usersDb = await prisma.user.createMany({ data: users })
-//   console.log(usersDb)
-// }
+  const usersDb = await prisma.user.createMany({ data: users })
+  console.log(usersDb)
+}

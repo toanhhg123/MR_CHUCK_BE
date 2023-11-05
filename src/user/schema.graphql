@@ -1,3 +1,14 @@
+enum EUserRaceAndEthnicity {
+  ASIAN
+  BLACK
+  WHITE
+  INDIAN
+  MIDDLE_EASTERN
+  PACIFIC_ISLANDER
+  AFRICAN_OR_Black
+  HISPANIC_OR_LATINO
+}
+
 type avatar_images {
   avatar_id: String!
   gender: String
@@ -20,6 +31,7 @@ type User {
   avatar_imagesAvatar_id: String
   avatarImage: avatar_images
   roleRef: Role
+  etnicity: EUserRaceAndEthnicity
 }
 
 input UserRequestLogin {

@@ -70,7 +70,7 @@ const caseResolvers: Resolvers = {
         throw new Error('user not owner')
       }
 
-      return caseService.addJunrorsToCase(num, caseId)
+      return caseService.addJunrorsVersionFreeToCase(num, caseId)
     }
   },
 

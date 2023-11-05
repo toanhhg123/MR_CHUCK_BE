@@ -105,9 +105,20 @@ type Query {
   getCaseById(caseId: String!): Case
 }
 
+input OptionAddJunror {
+  type: ECASE_TYPE
+  gender: String
+  ageRange: [Int!]
+  raceOrEthnicity: EUserRaceAndEthnicity
+}
+
 type Mutation {
   createCase(caseInput: CaseInput!): Case
   addUserToCase(input: UserCaseInput!): Case
   updateCase(caseId: String!, input: CaseInputUpdate!): Case
-  addJunrorToCase(num: Int!, caseId: String!): Case
+  addJunrorToCase(
+    num: Int!
+    caseId: String!
+    optionAddJunror: OptionAddJunror
+  ): Case
 }

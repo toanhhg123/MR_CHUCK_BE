@@ -1,5 +1,5 @@
-import server from './app'
 import dotenv from 'dotenv'
+import server from './app'
 
 dotenv.config()
 

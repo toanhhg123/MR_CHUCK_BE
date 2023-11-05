@@ -130,6 +130,16 @@ export type ETypeRoom =
   | 'BOX'
   | 'GROUP';
 
+export type EUserRaceAndEthnicity =
+  | 'AFRICAN_OR_Black'
+  | 'ASIAN'
+  | 'BLACK'
+  | 'HISPANIC_OR_LATINO'
+  | 'INDIAN'
+  | 'MIDDLE_EASTERN'
+  | 'PACIFIC_ISLANDER'
+  | 'WHITE';
+
 export type InputRoom = {
   caseId: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -210,6 +220,7 @@ export type Mutation = {
 export type MutationaddJunrorToCaseArgs = {
   caseId: Scalars['String']['input'];
   num: Scalars['Int']['input'];
+  optionAddJunror?: InputMaybe<OptionAddJunror>;
 };
 
 
@@ -282,6 +293,13 @@ export type MutationsendMessageToRoomArgs = {
 export type MutationupdateCaseArgs = {
   caseId: Scalars['String']['input'];
   input: CaseInputUpdate;
+};
+
+export type OptionAddJunror = {
+  ageRange?: InputMaybe<Array<Scalars['Int']['input']>>;
+  gender?: InputMaybe<Scalars['String']['input']>;
+  raceOrEthnicity?: InputMaybe<EUserRaceAndEthnicity>;
+  type?: InputMaybe<ECASE_TYPE>;
 };
 
 export type Query = {
@@ -364,6 +382,7 @@ export type User = {
   avatarImage?: Maybe<avatar_images>;
   avatar_imagesAvatar_id?: Maybe<Scalars['String']['output']>;
   email: Scalars['String']['output'];
+  etnicity?: Maybe<EUserRaceAndEthnicity>;
   firstName?: Maybe<Scalars['String']['output']>;
   gender?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
@@ -517,6 +536,7 @@ export type ResolversTypes = {
   ERole: ERole;
   ESjqApprovalStatus: ESjqApprovalStatus;
   ETypeRoom: ETypeRoom;
+  EUserRaceAndEthnicity: EUserRaceAndEthnicity;
   InputRoom: InputRoom;
   Location: ResolverTypeWrapper<Location>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
@@ -526,6 +546,7 @@ export type ResolversTypes = {
   MessageCaseInput: MessageCaseInput;
   MessageRoomInput: MessageRoomInput;
   Mutation: ResolverTypeWrapper<{}>;
+  OptionAddJunror: OptionAddJunror;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
   Room: ResolverTypeWrapper<Room>;
@@ -560,6 +581,7 @@ export type ResolversParentTypes = {
   MessageCaseInput: MessageCaseInput;
   MessageRoomInput: MessageRoomInput;
   Mutation: {};
+  OptionAddJunror: OptionAddJunror;
   Query: {};
   Role: Role;
   Room: Room;
@@ -707,6 +729,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
   avatarImage?: Resolver<Maybe<ResolversTypes['avatar_images']>, ParentType, ContextType>;
   avatar_imagesAvatar_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  etnicity?: Resolver<Maybe<ResolversTypes['EUserRaceAndEthnicity']>, ParentType, ContextType>;
   firstName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   gender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;

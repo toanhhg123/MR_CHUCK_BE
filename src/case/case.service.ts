@@ -137,9 +137,9 @@ export class CaseService {
     return CaseModel.update({ data: input as Case, where: { id: caseId } })
   }
 
-  async addJunrorsToCase(num: number, caseId: string) {
+  async addJunrorsVersionFreeToCase(num: number, caseId: string) {
     const [userJunrors, userCases] = await Promise.all([
-      prisma.user.findMany({ where: { role: 'JUROR' } }),
+      prisma.user.findMany({ where: { role: 'JUROR', paidVersion: 'FREE' } }),
       prisma.userCase.findMany({ where: { caseId } })
     ])
 
@@ -154,6 +154,28 @@ export class CaseService {
         .slice(0, num)
         .map((user) => ({ caseId, userId: user.id }))
     })
+
+    return this.getCaseById(caseId)
+  }
+
+  async addJunrorsVersionPaidToCase(num: number, caseId: string) {
+    const userCases = await prisma.userCase.findMany({ where: { caseId } })
+
+    const usersVersionPaid = await prisma.user.findMany({
+      where: {
+        paidVersion: 'PAID',
+        id: {
+          notIn: userCases.map((user) => user.userId)
+        }
+      },
+      take: num
+    })
+
+    const { count } = await prisma.userCase.createMany({
+      data: usersVersionPaid.map((user) => ({ caseId, userId: user.id }))
+    })
+
+    console.log(`model UserCase inserted ${count} record`)
 
     return this.getCaseById(caseId)
   }
