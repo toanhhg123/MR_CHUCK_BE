@@ -43,7 +43,7 @@ model Location {
 model Case {
   id                      String              @id @default(uuid())
   name                    String
-  number                  Int                 @unique
+  number                  String              @unique
   process                 Int                 @default(0)
   description             String?
   locationId              String?

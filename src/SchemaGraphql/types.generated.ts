@@ -49,7 +49,7 @@ export type Case = {
   messageCases?: Maybe<Array<Maybe<MessageCase>>>;
   name: Scalars['String']['output'];
   neutralSummary?: Maybe<Scalars['String']['output']>;
-  number: Scalars['Int']['output'];
+  number: Scalars['String']['output'];
   paidVersion: EPAD_VERSION;
   process: Scalars['Int']['output'];
   rooms?: Maybe<Array<Maybe<Room>>>;
@@ -73,7 +73,7 @@ export type CaseInput = {
   locationId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
-  number: Scalars['Int']['input'];
+  number: Scalars['String']['input'];
   paidVersion: EPAD_VERSION;
   process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
@@ -92,7 +92,7 @@ export type CaseInputUpdate = {
   locationId?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
-  number?: InputMaybe<Scalars['Int']['input']>;
+  number?: InputMaybe<Scalars['String']['input']>;
   paidVersion?: InputMaybe<EPAD_VERSION>;
   process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
@@ -151,7 +151,6 @@ export type InputRoom = {
 
 export type Location = {
   __typename?: 'Location';
-  Case?: Maybe<Array<Maybe<Case>>>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
 };
@@ -619,7 +618,7 @@ export type CaseResolvers<ContextType = any, ParentType extends ResolversParentT
   messageCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageCase']>>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   neutralSummary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  number?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   paidVersion?: Resolver<ResolversTypes['EPAD_VERSION'], ParentType, ContextType>;
   process?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   rooms?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType>;
@@ -640,7 +639,6 @@ export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
 }
 
 export type LocationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Location'] = ResolversParentTypes['Location']> = {
-  Case?: Resolver<Maybe<Array<Maybe<ResolversTypes['Case']>>>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
