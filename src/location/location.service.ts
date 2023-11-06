@@ -5,10 +5,10 @@ const { location } = prisma
 
 export class LocationService {
   getAll() {
-    return location.findMany({ include: { Case: true } })
+    return location.findMany({})
   }
   create(input: LocationInput) {
-    return location.create({ data: input, include: { Case: true } })
+    return location.create({ data: input })
   }
 }
 
