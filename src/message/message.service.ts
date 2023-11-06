@@ -3,7 +3,7 @@ import prisma from '~/config/db'
 
 const { message } = prisma
 
-const include = {
+export const includeMessage = {
   replies: {
     include: { reply: true }
   },
@@ -18,7 +18,7 @@ export class MessageService {
   getMessageByRoomId(roomId: string) {
     return message.findMany({
       where: { roomId },
-      include,
+      include: includeMessage,
       orderBy: {
         dateCreated: 'asc'
       }
@@ -31,7 +31,7 @@ export class MessageService {
         ...input,
         senderId
       },
-      include
+      include: includeMessage
     })
   }
 }

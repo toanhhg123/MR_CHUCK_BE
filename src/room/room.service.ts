@@ -1,6 +1,7 @@
 import { InputRoom } from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
 import _ from 'lodash'
+import { includeMessage } from '~/message/message.service'
 const { room, userRoom } = prisma
 
 export class RoomService {
@@ -92,14 +93,7 @@ export class RoomService {
           }
         },
         messages: {
-          include: {
-            sender: true,
-            replies: {
-              include: {
-                sender: true
-              }
-            }
-          }
+          include: includeMessage
         }
       }
     })
@@ -115,10 +109,7 @@ export class RoomService {
           }
         },
         messages: {
-          include: {
-            sender: true,
-            replies: true
-          }
+          include: includeMessage
         }
       }
     })
@@ -132,10 +123,7 @@ export class RoomService {
         }
       },
       messages: {
-        include: {
-          sender: true,
-          replies: true
-        }
+        include: includeMessage
       }
     }
 
