@@ -1,3 +1,9 @@
+src/SchemaGraphql/**/Mutation/**
+src/SchemaGraphql/**/Query/**
+src/SchemaGraphql/resolvers.generated.ts
+node_modules
+dist
+
 # Logs
 logs
 *.log

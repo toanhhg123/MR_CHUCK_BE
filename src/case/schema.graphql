@@ -24,7 +24,7 @@ enum ESjqApprovalStatus {
 type Case {
   id: String!
   name: String!
-  number: String!
+  number: Int!
   process: Int!
   type: ECASE_TYPE
   status: ECaseStatus!
@@ -61,7 +61,7 @@ type UserCase {
 
 input CaseInput {
   name: String!
-  number: String!
+  number: Int!
   process: Int
   type: ECASE_TYPE
   status: ECaseStatus!
@@ -80,7 +80,7 @@ input CaseInput {
 
 input CaseInputUpdate {
   name: String
-  number: String
+  number: Int
   process: Int
   type: ECASE_TYPE
   status: ECaseStatus

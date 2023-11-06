@@ -49,7 +49,7 @@ export type Case = {
   messageCases?: Maybe<Array<Maybe<MessageCase>>>;
   name: Scalars['String']['output'];
   neutralSummary?: Maybe<Scalars['String']['output']>;
-  number: Scalars['String']['output'];
+  number: Scalars['Int']['output'];
   paidVersion: EPAD_VERSION;
   process: Scalars['Int']['output'];
   rooms?: Maybe<Array<Maybe<Room>>>;
@@ -73,7 +73,7 @@ export type CaseInput = {
   locationId?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
-  number: Scalars['String']['input'];
+  number: Scalars['Int']['input'];
   paidVersion: EPAD_VERSION;
   process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
@@ -92,7 +92,7 @@ export type CaseInputUpdate = {
   locationId?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
-  number?: InputMaybe<Scalars['String']['input']>;
+  number?: InputMaybe<Scalars['Int']['input']>;
   paidVersion?: InputMaybe<EPAD_VERSION>;
   process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
@@ -618,7 +618,7 @@ export type CaseResolvers<ContextType = any, ParentType extends ResolversParentT
   messageCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['MessageCase']>>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   neutralSummary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  number?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   paidVersion?: Resolver<ResolversTypes['EPAD_VERSION'], ParentType, ContextType>;
   process?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   rooms?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType>;
