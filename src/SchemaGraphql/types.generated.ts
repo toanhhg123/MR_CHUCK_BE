@@ -51,6 +51,7 @@ export type Case = {
   neutralSummary?: Maybe<Scalars['String']['output']>;
   number: Scalars['Int']['output'];
   paidVersion: EPAD_VERSION;
+  process: Scalars['Int']['output'];
   rooms?: Maybe<Array<Maybe<Room>>>;
   sjqApprovalStatus?: Maybe<ESjqApprovalStatus>;
   sjqSubmissionDate?: Maybe<Scalars['Date']['output']>;
@@ -74,6 +75,7 @@ export type CaseInput = {
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
   number: Scalars['Int']['input'];
   paidVersion: EPAD_VERSION;
+  process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
   sjqSubmissionDate?: InputMaybe<Scalars['Date']['input']>;
   status: ECaseStatus;
@@ -92,6 +94,7 @@ export type CaseInputUpdate = {
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
   number?: InputMaybe<Scalars['Int']['input']>;
   paidVersion?: InputMaybe<EPAD_VERSION>;
+  process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
   sjqSubmissionDate?: InputMaybe<Scalars['Date']['input']>;
   status?: InputMaybe<ECaseStatus>;
@@ -618,6 +621,7 @@ export type CaseResolvers<ContextType = any, ParentType extends ResolversParentT
   neutralSummary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   paidVersion?: Resolver<ResolversTypes['EPAD_VERSION'], ParentType, ContextType>;
+  process?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   rooms?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType>;
   sjqApprovalStatus?: Resolver<Maybe<ResolversTypes['ESjqApprovalStatus']>, ParentType, ContextType>;
   sjqSubmissionDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;

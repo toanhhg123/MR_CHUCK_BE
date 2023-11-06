@@ -25,6 +25,7 @@ type Case {
   id: String!
   name: String!
   number: Int!
+  process: Int!
   type: ECASE_TYPE
   status: ECaseStatus!
   paidVersion: EPAD_VERSION!
@@ -61,6 +62,7 @@ type UserCase {
 input CaseInput {
   name: String!
   number: Int!
+  process: Int
   type: ECASE_TYPE
   status: ECaseStatus!
   paidVersion: EPAD_VERSION!
@@ -79,6 +81,7 @@ input CaseInput {
 input CaseInputUpdate {
   name: String
   number: Int
+  process: Int
   type: ECASE_TYPE
   status: ECaseStatus
   paidVersion: EPAD_VERSION

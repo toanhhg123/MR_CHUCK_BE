@@ -144,7 +144,7 @@ export class RoomService {
         caseId,
         type: 'BOX',
         userRooms: {
-          some: {
+          every: {
             OR: [
               {
                 userId
@@ -171,7 +171,7 @@ export class RoomService {
       })
     }
 
-    return roomDb
+    return roomDb!
   }
 }
 

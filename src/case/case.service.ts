@@ -82,6 +82,7 @@ export class CaseService {
     return CaseModel.create({
       data: {
         ...input,
+        process: 0,
         userCreatedId,
         sjqSubmissionDate: new Date(input.sjqSubmissionDate)
       },
