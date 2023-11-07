@@ -7,6 +7,8 @@ import {
 import prisma from '~/config/db'
 import _ from 'lodash'
 import { Case } from '@prisma/client'
+import { GraphQlErrorHttp } from '~/config/error'
+import { StatusCodes } from 'http-status-codes'
 
 const { case: CaseModel, userCase } = prisma
 
@@ -21,6 +23,12 @@ export class CaseService {
         createdAt: 'desc'
       }
     })
+  }
+
+  async validateNumberCase(num: string) {
+    if (await CaseModel.findFirst({ where: { number: num } })) {
+      throw GraphQlErrorHttp(StatusCodes.CONFLICT, 'case number is exist')
+    }
   }
 
   async isAllInCase(userIds: string[], caseId: string) {
@@ -78,7 +86,9 @@ export class CaseService {
     })
   }
 
-  createCase(input: CaseInput, userCreatedId: string) {
+  async createCase(input: CaseInput, userCreatedId: string) {
+    await this.validateNumberCase(input.number)
+
     return CaseModel.create({
       data: {
         ...input,
@@ -134,9 +144,14 @@ export class CaseService {
     return this.getCaseById(input.caseId)
   }
 
-  updateCase(caseId: string, input: CaseInputUpdate) {
+  async updateCase(caseId: string, input: CaseInputUpdate) {
+    if (input.number) {
+      await this.validateNumberCase(input.number)
+    }
+
     if (input.sjqSubmissionDate)
       input.sjqSubmissionDate = new Date(input.sjqSubmissionDate)
+
     return CaseModel.update({ data: input as Case, where: { id: caseId } })
   }
 

@@ -1,27 +1,21 @@
-import { GraphQLError } from 'graphql'
+import { StatusCodes } from 'http-status-codes'
 import { ApolloContext } from '~/apollo'
+import { GraphQlErrorHttp } from '~/config/error'
 import { decodeToken } from '~/utils/jwt.util'
 
 export const isAuth = (context: ApolloContext) => {
   if (!context.token)
-    throw new GraphQLError('User is not authenticated', {
-      extensions: {
-        code: 'UNAUTHENTICATED',
-        http: { status: 401 }
-      }
-    })
+    throw GraphQlErrorHttp(
+      StatusCodes.UNAUTHORIZED,
+      'User is not authenticated'
+    )
   return decodeToken(context.token)
 }
 
 export const isAdmin = (context: ApolloContext) => {
   const { role } = isAuth(context)
   if (role !== 'ADMIN') {
-    throw new GraphQLError('forbidden', {
-      extensions: {
-        code: 'FORBIDDEN',
-        http: { status: 403 }
-      }
-    })
+    throw GraphQlErrorHttp(StatusCodes.FORBIDDEN, 'FORBIDDEN')
   }
   return true
 }
