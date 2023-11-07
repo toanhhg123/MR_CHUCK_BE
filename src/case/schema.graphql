@@ -25,10 +25,8 @@ type Case {
   id: String!
   name: String!
   number: String!
-  process: Int!
   type: ECASE_TYPE
   status: ECaseStatus!
-  paidVersion: EPAD_VERSION!
   description: String
   locationId: String
   subDepartment: String
@@ -62,10 +60,8 @@ type UserCase {
 input CaseInput {
   name: String!
   number: String!
-  process: Int
   type: ECASE_TYPE
   status: ECaseStatus!
-  paidVersion: EPAD_VERSION!
   description: String
   locationId: String
   subDepartment: String
@@ -81,10 +77,8 @@ input CaseInput {
 input CaseInputUpdate {
   name: String
   number: String
-  process: Int
   type: ECASE_TYPE
   status: ECaseStatus
-  paidVersion: EPAD_VERSION
   description: String
   locationId: String
   subDepartment: String
@@ -109,8 +103,8 @@ type Query {
 }
 
 input OptionAddJunror {
-  paidVersion: EPAD_VERSION
   gender: String
+  paidVersion: EPAD_VERSION
   ageRange: [Int!]
   raceOrEthnicity: EUserRaceAndEthnicity
 }

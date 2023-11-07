@@ -44,7 +44,6 @@ model Case {
   id                      String              @id @default(uuid())
   name                    String
   number                  String              @unique
-  process                 Int                 @default(0)
   description             String?
   locationId              String?
   subDepartment           String?
@@ -58,7 +57,6 @@ model Case {
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @default(now())
   userCreatedId           String
-  paidVersion             EPAD_VERSION        @default(FREE)
   type                    ECASE_TYPE?         @default(TORTS)
   status                  ECaseStatus         @default(NEW)
   location                Location?           @relation(fields: [locationId], references: [id])

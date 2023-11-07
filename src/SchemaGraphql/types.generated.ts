@@ -50,8 +50,6 @@ export type Case = {
   name: Scalars['String']['output'];
   neutralSummary?: Maybe<Scalars['String']['output']>;
   number: Scalars['String']['output'];
-  paidVersion: EPAD_VERSION;
-  process: Scalars['Int']['output'];
   rooms?: Maybe<Array<Maybe<Room>>>;
   sjqApprovalStatus?: Maybe<ESjqApprovalStatus>;
   sjqSubmissionDate?: Maybe<Scalars['Date']['output']>;
@@ -74,8 +72,6 @@ export type CaseInput = {
   name: Scalars['String']['input'];
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
   number: Scalars['String']['input'];
-  paidVersion: EPAD_VERSION;
-  process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
   sjqSubmissionDate?: InputMaybe<Scalars['Date']['input']>;
   status: ECaseStatus;
@@ -93,8 +89,6 @@ export type CaseInputUpdate = {
   name?: InputMaybe<Scalars['String']['input']>;
   neutralSummary?: InputMaybe<Scalars['String']['input']>;
   number?: InputMaybe<Scalars['String']['input']>;
-  paidVersion?: InputMaybe<EPAD_VERSION>;
-  process?: InputMaybe<Scalars['Int']['input']>;
   sjqApprovalStatus?: InputMaybe<ESjqApprovalStatus>;
   sjqSubmissionDate?: InputMaybe<Scalars['Date']['input']>;
   status?: InputMaybe<ECaseStatus>;
@@ -528,7 +522,6 @@ export type ResolversTypes = {
   AuthRequest: AuthRequest;
   AuthResponse: ResolverTypeWrapper<AuthResponse>;
   Case: ResolverTypeWrapper<Case>;
-  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   CaseInput: CaseInput;
   CaseInputUpdate: CaseInputUpdate;
   Date: ResolverTypeWrapper<Scalars['Date']['output']>;
@@ -549,6 +542,7 @@ export type ResolversTypes = {
   MessageCaseInput: MessageCaseInput;
   MessageRoomInput: MessageRoomInput;
   Mutation: ResolverTypeWrapper<{}>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   OptionAddJunror: OptionAddJunror;
   Query: ResolverTypeWrapper<{}>;
   Role: ResolverTypeWrapper<Role>;
@@ -571,7 +565,6 @@ export type ResolversParentTypes = {
   AuthRequest: AuthRequest;
   AuthResponse: AuthResponse;
   Case: Case;
-  Int: Scalars['Int']['output'];
   CaseInput: CaseInput;
   CaseInputUpdate: CaseInputUpdate;
   Date: Scalars['Date']['output'];
@@ -584,6 +577,7 @@ export type ResolversParentTypes = {
   MessageCaseInput: MessageCaseInput;
   MessageRoomInput: MessageRoomInput;
   Mutation: {};
+  Int: Scalars['Int']['output'];
   OptionAddJunror: OptionAddJunror;
   Query: {};
   Role: Role;
@@ -619,8 +613,6 @@ export type CaseResolvers<ContextType = any, ParentType extends ResolversParentT
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   neutralSummary?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  paidVersion?: Resolver<ResolversTypes['EPAD_VERSION'], ParentType, ContextType>;
-  process?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   rooms?: Resolver<Maybe<Array<Maybe<ResolversTypes['Room']>>>, ParentType, ContextType>;
   sjqApprovalStatus?: Resolver<Maybe<ResolversTypes['ESjqApprovalStatus']>, ParentType, ContextType>;
   sjqSubmissionDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
