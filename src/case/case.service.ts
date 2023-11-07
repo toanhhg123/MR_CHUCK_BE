@@ -31,10 +31,10 @@ export class CaseService {
   }
 
   async isOwnerCase(userCreatedId: string, caseId: string) {
-    const isExsit = await CaseModel.findFirst({
+    const isExist = await CaseModel.findFirst({
       where: { userCreatedId, id: caseId }
     })
-    return isExsit ? true : false
+    return isExist ? true : false
   }
 
   getMyCase(userId: string) {
@@ -141,16 +141,16 @@ export class CaseService {
     return CaseModel.update({ data: input as Case, where: { id: caseId } })
   }
 
-  async addJunrorsVersionFreeToCase(num: number, caseId: string) {
-    const [userJunrors, userCases] = await Promise.all([
+  async addJurorsVersionFreeToCase(num: number, caseId: string) {
+    const [userJurors, userCases] = await Promise.all([
       prisma.user.findMany({ where: { role: 'JUROR', paidVersion: 'FREE' } }),
       prisma.userCase.findMany({ where: { caseId } })
     ])
 
     const userCaseIds = userCases.map((user) => user.userId)
 
-    const usersNotInCases = userJunrors.filter(
-      (userJunror) => !userCaseIds.includes(userJunror.id)
+    const usersNotInCases = userJurors.filter(
+      (userJuror) => !userCaseIds.includes(userJuror.id)
     )
 
     await prisma.userCase.createMany({
@@ -173,10 +173,10 @@ export class CaseService {
 
     const { ageRange, raceOrEthnicity, ...restOption } = option
 
-    let ageFillter = undefined
+    let ageFilter = undefined
 
     if (ageRange) {
-      ageFillter = {
+      ageFilter = {
         gte: ageRange[0],
         lte: ageRange[1]
       }
@@ -187,7 +187,7 @@ export class CaseService {
         ...restOption,
         etnicity: raceOrEthnicity,
         paidVersion: 'PAID',
-        age: ageFillter,
+        age: ageFilter,
         id: {
           notIn: userCases.map((user) => user.userId)
         }

@@ -73,7 +73,7 @@ const caseResolvers: Resolvers = {
       }
 
       if (optionAddJunror.paidVersion === 'FREE')
-        return caseService.addJunrorsVersionFreeToCase(num, caseId)
+        return caseService.addJurorsVersionFreeToCase(num, caseId)
 
       if (optionAddJunror.paidVersion === 'PAID')
         return caseService.addJunrorsVersionPaidToCase(
