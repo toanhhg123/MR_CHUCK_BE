@@ -3,8 +3,8 @@ import locationService from './location.service'
 
 const locationResolves: Resolvers = {
   Query: {
-    getLocations: () => {
-      return locationService.getAll()
+    getLocations: (_, { search }) => {
+      return locationService.getAll(search?.toString())
     }
   },
 

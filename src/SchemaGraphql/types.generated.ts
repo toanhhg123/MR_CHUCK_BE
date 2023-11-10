@@ -321,6 +321,11 @@ export type QuerygetCaseByIdArgs = {
 };
 
 
+export type QuerygetLocationsArgs = {
+  search?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QuerygetMessageByRoomIdArgs = {
   roomId: Scalars['String']['input'];
 };
@@ -685,7 +690,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   getCaseById?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<QuerygetCaseByIdArgs, 'caseId'>>;
   getCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['Case']>>>, ParentType, ContextType>;
-  getLocations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Location']>>>, ParentType, ContextType>;
+  getLocations?: Resolver<Maybe<Array<Maybe<ResolversTypes['Location']>>>, ParentType, ContextType, Partial<QuerygetLocationsArgs>>;
   getMe?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   getMessageByRoomId?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType, RequireFields<QuerygetMessageByRoomIdArgs, 'roomId'>>;
   getMyCases?: Resolver<Maybe<Array<Maybe<ResolversTypes['Case']>>>, ParentType, ContextType>;

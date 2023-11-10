@@ -25,6 +25,16 @@ export class UserService {
             email: {
               contains: query
             }
+          },
+          {
+            lastName: {
+              contains: query
+            }
+          },
+          {
+            firstName: {
+              contains: query
+            }
           }
         ]
       },
