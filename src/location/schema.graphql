@@ -9,6 +9,7 @@ input LocationInput {
 
 type Query {
   getLocations(search: String): [Location]
+  getLocation(id: String!): Location
 }
 
 type Mutation {

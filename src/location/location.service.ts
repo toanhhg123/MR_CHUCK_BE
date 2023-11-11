@@ -10,7 +10,8 @@ export class LocationService {
         OR: [
           {
             name: {
-              contains: search
+              contains: search,
+              mode: 'insensitive'
             }
           }
         ]
@@ -18,6 +19,11 @@ export class LocationService {
       take: 20
     })
   }
+
+  getLocationById(id: string) {
+    return location.findFirst({ where: { id } })
+  }
+
   create(input: LocationInput) {
     return location.create({ data: input })
   }

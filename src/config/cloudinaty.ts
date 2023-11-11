@@ -13,11 +13,18 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET
 })
 
-export const uploadToCloudinary = (file: Express.Multer.File) => {
+export const uploadToCloudinary = (
+  fileName: string,
+  file: Express.Multer.File
+) => {
   return new Promise<UploadApiResponse>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: CLOUDINARY_FOLDER_NAME
+        folder: CLOUDINARY_FOLDER_NAME,
+        resource_type: 'raw',
+        use_filename: true,
+        filename_override: fileName,
+        overwrite: false
       },
       (error, result) => {
         if (result) {
@@ -34,7 +41,10 @@ export const uploadToCloudinary = (file: Express.Multer.File) => {
 export const deleteImagesUpload = (id: string) => {
   return new Promise<UploadApiResponse>((resolve, reject) => {
     cloudinary.uploader
-      .destroy(`${CLOUDINARY_FOLDER_NAME}/${id}`)
+      .destroy(`${CLOUDINARY_FOLDER_NAME}/${id}`, {
+        resource_type: 'raw',
+        type: 'upload'
+      })
       .then(resolve)
       .catch(reject)
       .finally(reject)

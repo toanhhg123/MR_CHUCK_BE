@@ -5,6 +5,10 @@ const locationResolves: Resolvers = {
   Query: {
     getLocations: (_, { search }) => {
       return locationService.getAll(search?.toString())
+    },
+
+    getLocation: (_, { id }) => {
+      return locationService.getLocationById(id)
     }
   },
 

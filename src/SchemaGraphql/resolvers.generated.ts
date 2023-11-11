@@ -23,6 +23,7 @@ import    { sendMessageToRoom as Mutation_sendMessageToRoom } from './message/re
 import    { updateCase as Mutation_updateCase } from './case/resolvers/Mutation/updateCase';
 import    { getCaseById as Query_getCaseById } from './case/resolvers/Query/getCaseById';
 import    { getCases as Query_getCases } from './case/resolvers/Query/getCases';
+import    { getLocation as Query_getLocation } from './location/resolvers/Query/getLocation';
 import    { getLocations as Query_getLocations } from './location/resolvers/Query/getLocations';
 import    { getMe as Query_getMe } from './auth/resolvers/Query/getMe';
 import    { getMessageByRoomId as Query_getMessageByRoomId } from './message/resolvers/Query/getMessageByRoomId';
@@ -41,7 +42,7 @@ import    { UserCase } from './case/resolvers/UserCase';
 import    { UserRoom } from './room/resolvers/UserRoom';
 import    { avatar_images } from './user/resolvers/avatar_images';
     export const resolvers: Resolvers = {
-      Query: { getCaseById: Query_getCaseById,getCases: Query_getCases,getLocations: Query_getLocations,getMe: Query_getMe,getMessageByRoomId: Query_getMessageByRoomId,getMyCases: Query_getMyCases,getRoles: Query_getRoles,getRoomBoxByUserId: Query_getRoomBoxByUserId,getRoomById: Query_getRoomById,getRoomsByCaseId: Query_getRoomsByCaseId,getUser: Query_getUser,getUsers: Query_getUsers,searchUser: Query_searchUser },
+      Query: { getCaseById: Query_getCaseById,getCases: Query_getCases,getLocation: Query_getLocation,getLocations: Query_getLocations,getMe: Query_getMe,getMessageByRoomId: Query_getMessageByRoomId,getMyCases: Query_getMyCases,getRoles: Query_getRoles,getRoomBoxByUserId: Query_getRoomBoxByUserId,getRoomById: Query_getRoomById,getRoomsByCaseId: Query_getRoomsByCaseId,getUser: Query_getUser,getUsers: Query_getUsers,searchUser: Query_searchUser },
       Mutation: { addJunrorToCase: Mutation_addJunrorToCase,addUserToCase: Mutation_addUserToCase,addUserToRooms: Mutation_addUserToRooms,addUsersToRoom: Mutation_addUsersToRoom,createCase: Mutation_createCase,createLocation: Mutation_createLocation,createMessageCase: Mutation_createMessageCase,createRole: Mutation_createRole,createRoom: Mutation_createRoom,createUser: Mutation_createUser,deleteUser: Mutation_deleteUser,login: Mutation_login,register: Mutation_register,sendMessageToRoom: Mutation_sendMessageToRoom,updateCase: Mutation_updateCase },
       
       AuthResponse: AuthResponse,
