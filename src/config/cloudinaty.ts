@@ -6,6 +6,8 @@ import {
   CLOUDINARY_FOLDER_NAME
 } from './env'
 import streamifier from 'streamifier'
+import path from 'path'
+import { uniqueId } from 'lodash'
 
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
@@ -13,18 +15,14 @@ cloudinary.config({
   api_secret: CLOUDINARY_API_SECRET
 })
 
-export const uploadToCloudinary = (
-  fileName: string,
-  file: Express.Multer.File
-) => {
+export const uploadToCloudinary = (file: Express.Multer.File) => {
   return new Promise<UploadApiResponse>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: CLOUDINARY_FOLDER_NAME,
         resource_type: 'raw',
-        use_filename: true,
-        filename_override: fileName,
-        overwrite: false
+        filename_override: uniqueId() + path.extname(file.originalname),
+        use_filename: true
       },
       (error, result) => {
         if (result) {

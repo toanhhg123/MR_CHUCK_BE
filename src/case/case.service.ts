@@ -145,8 +145,12 @@ export class CaseService {
   }
 
   async updateCase(caseId: string, input: CaseInputUpdate) {
-    if (input.number) {
-      await this.validateNumberCase(input.number)
+    const caseUpdate = await CaseModel.findFirst({ where: { id: caseId } })
+    if (!caseUpdate)
+      throw GraphQlErrorHttp(StatusCodes.BAD_REQUEST, 'case is not exist')
+
+    if (input.number === caseUpdate.number) {
+      delete input.number
     }
 
     if (input.sjqSubmissionDate)
