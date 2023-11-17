@@ -41,13 +41,14 @@ model Location {
 }
 
 model Case {
-  id                      String              @id @default(uuid())
-  name                    String
-  number                  String              @unique
-  description             String?
-  locationId              String?
-  subDepartment           String?
-  attorneyName            String?
+  id            String  @id @default(uuid())
+  name          String
+  number        String  @unique
+  description   String?
+  locationId    String?
+  subDepartment String?
+  attorneyName  String?
+
   attorneyFirmName        String?
   neutralSummary          String?
   additionalInfo          String?
@@ -57,7 +58,7 @@ model Case {
   createdAt               DateTime            @default(now())
   updatedAt               DateTime            @default(now())
   userCreatedId           String
-  type                    ECASE_TYPE?         @default(TORTS)
+  type                    ECASE_TYPE?
   status                  ECaseStatus         @default(NEW)
   location                Location?           @relation(fields: [locationId], references: [id])
   userCreated             User                @relation(fields: [userCreatedId], references: [id])
@@ -152,8 +153,8 @@ enum EPAD_VERSION {
 }
 
 enum ECASE_TYPE {
-  TORTS
-  MEDICAL_MALPRACTICE
+  DELIVERY_DAMAGED
+  WRONG_COLOR
 }
 
 enum ESjqApprovalStatus {

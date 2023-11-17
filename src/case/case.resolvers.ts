@@ -81,6 +81,25 @@ const caseResolvers: Resolvers = {
           caseId,
           optionAddJunror
         )
+    },
+
+    addOneJurorToCase: async (_, { caseId, optionAddJunror }, context) => {
+      optionAddJunror = { ...optionAddJunror }
+      const { id } = isAuth(context)
+
+      if (!(await caseService.isOwnerCase(id.toString(), caseId))) {
+        throw new Error('user not owner')
+      }
+
+      if (optionAddJunror.paidVersion === 'FREE')
+        return caseService.addJurorsVersionFreeToCase(1, caseId)
+
+      if (optionAddJunror.paidVersion === 'PAID')
+        return caseService.addJunrorsVersionPaidToCase(
+          1,
+          caseId,
+          optionAddJunror
+        )
     }
   },
 

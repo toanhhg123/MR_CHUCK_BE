@@ -12,8 +12,8 @@ enum ECaseStatus {
 }
 
 enum ECASE_TYPE {
-  TORTS
-  MEDICAL_MALPRACTICE
+  DELIVERY_DAMAGED
+  WRONG_COLOR
 }
 
 enum ESjqApprovalStatus {
@@ -118,4 +118,5 @@ type Mutation {
     caseId: String!
     optionAddJunror: OptionAddJunror
   ): Case
+  addOneJurorToCase(caseId: String!, optionAddJunror: OptionAddJunror): Case
 }

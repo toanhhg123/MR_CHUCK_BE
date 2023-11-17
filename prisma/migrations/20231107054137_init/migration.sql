@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE "Case" ALTER COLUMN "number" SET DATA TYPE TEXT;

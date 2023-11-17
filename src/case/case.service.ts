@@ -88,6 +88,7 @@ export class CaseService {
 
   async createCase(input: CaseInput, userCreatedId: string) {
     await this.validateNumberCase(input.number)
+    console.log(input)
 
     return CaseModel.create({
       data: {

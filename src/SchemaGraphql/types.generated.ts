@@ -97,8 +97,8 @@ export type CaseInputUpdate = {
 };
 
 export type ECASE_TYPE =
-  | 'MEDICAL_MALPRACTICE'
-  | 'TORTS';
+  | 'DELIVERY_DAMAGED'
+  | 'WRONG_COLOR';
 
 export type ECaseStatus =
   | 'CLOSED'
@@ -196,6 +196,7 @@ export type MessageRoomInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   addJunrorToCase?: Maybe<Case>;
+  addOneJurorToCase?: Maybe<Case>;
   addUserToCase?: Maybe<Case>;
   addUserToRooms?: Maybe<Scalars['Int']['output']>;
   addUsersToRoom?: Maybe<Scalars['Int']['output']>;
@@ -216,6 +217,12 @@ export type Mutation = {
 export type MutationaddJunrorToCaseArgs = {
   caseId: Scalars['String']['input'];
   num: Scalars['Int']['input'];
+  optionAddJunror?: InputMaybe<OptionAddJunror>;
+};
+
+
+export type MutationaddOneJurorToCaseArgs = {
+  caseId: Scalars['String']['input'];
   optionAddJunror?: InputMaybe<OptionAddJunror>;
 };
 
@@ -677,6 +684,7 @@ export type MessageCaseResolvers<ContextType = any, ParentType extends Resolvers
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   addJunrorToCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationaddJunrorToCaseArgs, 'caseId' | 'num'>>;
+  addOneJurorToCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationaddOneJurorToCaseArgs, 'caseId'>>;
   addUserToCase?: Resolver<Maybe<ResolversTypes['Case']>, ParentType, ContextType, RequireFields<MutationaddUserToCaseArgs, 'input'>>;
   addUserToRooms?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationaddUserToRoomsArgs, 'roomIds' | 'userId'>>;
   addUsersToRoom?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationaddUsersToRoomArgs, 'userRoomInput'>>;

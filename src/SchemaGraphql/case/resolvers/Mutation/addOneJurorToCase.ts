@@ -1,0 +1,2 @@
+import type   { MutationResolvers } from './../../../types.generated';
+        export const addOneJurorToCase: NonNullable<MutationResolvers['addOneJurorToCase']> = async (_parent, _arg, _ctx) => { /* Implement Mutation.addOneJurorToCase resolver logic here */ };
