@@ -18,25 +18,13 @@ export class UserService {
         OR: [
           {
             username: {
-              contains: query,
+              startsWith: query,
               mode: 'insensitive'
             }
           },
           {
             email: {
-              contains: query,
-              mode: 'insensitive'
-            }
-          },
-          {
-            lastName: {
-              contains: query,
-              mode: 'insensitive'
-            }
-          },
-          {
-            firstName: {
-              contains: query,
+              startsWith: query,
               mode: 'insensitive'
             }
           }
