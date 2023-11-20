@@ -2,6 +2,8 @@ import { InputRoom } from '~/SchemaGraphql/types.generated'
 import prisma from '~/config/db'
 import _ from 'lodash'
 import { includeMessage } from '~/message/message.service'
+import { GraphQlErrorHttp } from '~/config/error'
+import { StatusCodes } from 'http-status-codes'
 const { room, userRoom } = prisma
 
 export class RoomService {
@@ -116,6 +118,9 @@ export class RoomService {
   }
 
   async getRoomBoxByUserId(myId: string, userId: string, caseId: string) {
+    if (userId === myId)
+      throw GraphQlErrorHttp(StatusCodes.CONFLICT, 'error of myId and UserId')
+
     const include = {
       userRooms: {
         include: {
@@ -127,39 +132,41 @@ export class RoomService {
       }
     }
 
-    let roomDb = await room.findFirst({
+    console.log({ userId, myId })
+
+    const roomDb = await room.findFirst({
       where: {
         caseId,
         type: 'BOX',
         userRooms: {
-          every: {
-            OR: [
-              {
-                userId
-              },
-              { userId: myId }
-            ]
+          some: {
+            userId: myId,
+            room: {
+              userRooms: {
+                some: {
+                  userId: userId
+                }
+              }
+            }
           }
         }
       },
       include
     })
 
-    if (!roomDb) {
-      roomDb = await room.create({
-        data: {
-          caseId,
-          type: 'BOX',
-          name: `box ${myId} ---- ${userId}`,
-          userRooms: {
-            create: [{ userId }, { userId: myId }]
-          }
-        },
-        include
-      })
-    }
+    if (roomDb) return roomDb
 
-    return roomDb!
+    return await room.create({
+      data: {
+        caseId,
+        type: 'BOX',
+        name: `box ${myId} ---- ${userId}`,
+        userRooms: {
+          create: [{ userId }, { userId: myId }]
+        }
+      },
+      include
+    })
   }
 }
 

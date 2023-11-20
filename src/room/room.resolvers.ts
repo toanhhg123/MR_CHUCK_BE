@@ -32,13 +32,16 @@ const roomResolvers: Resolvers = {
     getRoomBoxByUserId: async (_, { userId, caseId }, context) => {
       const { id } = isAuth(context)
 
+      console.log(userId)
+      console.log(id)
+
       const isAllow = await Promise.all([
         caseService.isMemberInCase(caseId, userId),
         caseService.isMemberInCase(caseId, id.toString())
       ])
 
       if (!isAllow[0] || !isAllow[1])
-        throw new Error(`you or user selected not is member in case ${id}`)
+        throw new Error(`you or user selected not is member in case ${caseId}`)
 
       return roomService.getRoomBoxByUserId(id.toString(), userId, caseId)
     }
