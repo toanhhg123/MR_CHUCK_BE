@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import uploadRouter from '~/api/upload/upload.route'
 import serverApollo from './apollo'
+import { PORT } from './config/env'
 
 const server = async () => {
   const app = express()
@@ -22,6 +23,8 @@ const server = async () => {
 
   await serverApollo.start()
 
+  app.get('/', (req, res) => res.json('hello word'))
+
   app.use('/api/upload', uploadRouter)
 
   app.use(
@@ -38,7 +41,7 @@ const server = async () => {
     })
   )
 
-  app.listen(8080, () => {
+  app.listen(PORT || 8080, () => {
     console.log('Running a GraphQL API server at http://localhost:8080/graphql')
   })
 }
