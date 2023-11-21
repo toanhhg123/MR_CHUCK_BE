@@ -2,12 +2,7 @@ pipeline {
     agent any
 
     environment {
-    	DATABASE_URL = credentials('DATABASE_URL')
-      CLOUDINARY_CLOUD_NAME = credentials('CLOUDINARY_CLOUD_NAME')
-      CLOUDINARY_API_KEY = credentials('CLOUDINARY_API_KEY')
-      CLOUDINARY_API_SECRET = credentials('CLOUDINARY_API_SECRET')
-      CLOUDINARY_FOLDER_NAME = credentials('CLOUDINARY_FOLDER_NAME')
-      SECRET_JWT = credentials('SECRET_JWT')
+    	
     }
 
     stages {
@@ -16,12 +11,12 @@ pipeline {
                 script {
                     // Create a .env file with the environment variables
                     writeFile file: '.env', text: """
-                        DATABASE_URL=${DATABASE_URL}
-                        CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
-                        CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
-                        CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
-                        CLOUDINARY_FOLDER_NAME=${CLOUDINARY_FOLDER_NAME}
-                        SECRET_JWT=${SECRET_JWT}
+                        DATABASE_URL=${env.DATABASE_URL}
+                        CLOUDINARY_CLOUD_NAME=${env.CLOUDINARY_CLOUD_NAME}
+                        CLOUDINARY_API_KEY=${env.CLOUDINARY_API_KEY}
+                        CLOUDINARY_API_SECRET=${env.CLOUDINARY_API_SECRET}
+                        CLOUDINARY_FOLDER_NAME=${env.CLOUDINARY_FOLDER_NAME}
+                        SECRET_JWT=${env.SECRET_JWT}
                     """
 
                     // Run Docker Compose
