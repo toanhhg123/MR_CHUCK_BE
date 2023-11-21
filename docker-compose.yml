@@ -1,9 +1,17 @@
 version: '3'
 services:
-  app:
+  backend:
+    image: toanhhg123/mr_chuck_be:latest
+    container_name: 'mr_chuck_be'
     build:
       context: .
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     command: ["yarn", "start"]
+    networks:
+      - mr_chuck_network
+
+networks:
+  mr_chuck_network:
+    driver: bridge
