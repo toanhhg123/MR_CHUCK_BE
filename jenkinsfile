@@ -19,6 +19,7 @@ pipeline {
 
                     // Run Docker Compose
                     sh 'docker compose up -d'
+                    sh 'docker ps'
                 }
             }
         }
@@ -28,9 +29,8 @@ pipeline {
 
      post {
           always {
-              // Clean up: stop and remove containers
               script {
-                  sh 'docker-compose down'
+                  sh 'docker compose down'
               }
           }
     }
