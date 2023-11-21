@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Hello') {
+            steps {
+                sh "git --version"
+                sh "docker compose"
+                sh "java --version"
+            }
+        }
+        
+        stage('Print Environment Variables') {
+            steps {
+                script {
+                    // Access specific environment variables
+                    def varName = env.DATABASE_URL
+                   
+
+                    // Print the values of environment variables
+                    echo "VAR_NAME: ${varName}"
+                   
+
+                }
+            }
+        }
+    }
+}
