@@ -13,7 +13,3 @@ COPY . .
 RUN prisma generate --schema ./prisma/schema.prisma
 
 RUN yarn build
-
-EXPOSE 8080
-
-CMD [ "yarn", "start" ]

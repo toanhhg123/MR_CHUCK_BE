@@ -11,26 +11,32 @@ pipeline {
     }
 
     stages {
-        stage('Hello') {
-            steps {
-                sh "git --version"
-                sh "docker compose"
-                sh "java --version"
-            }
-        }
-        
-        stage('Print Environment Variables') {
+       stage('Run Docker Compose') {
             steps {
                 script {
-                    echo "DATABASE_URL: ${DATABASE_URL}"
-                    echo "CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}"
-                    echo "CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}"
-                    echo "CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}"
-                    echo "CLOUDINARY_FOLDER_NAME: ${CLOUDINARY_FOLDER_NAME}"
-                    echo "SECRET_JWT: ${SECRET_JWT}"
+                    // Create a .env file with the environment variables
+                    writeFile file: '.env', text: """
+                        DATABASE_URL=${DATABASE_URL}
+                        CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+                        CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+                        CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+                        CLOUDINARY_FOLDER_NAME=${CLOUDINARY_FOLDER_NAME}
+                        SECRET_JWT=${SECRET_JWT}
+                    """
 
+                    // Run Docker Compose
+                    sh 'docker-compose up -d'
                 }
             }
+        }
+
+         post {
+          always {
+              // Clean up: stop and remove containers
+              script {
+                  sh 'docker-compose down'
+              }
+          }
         }
     }
 }
