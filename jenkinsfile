@@ -1,6 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+    	DATABASE_URL = env.DATABASE_URL
+      CLOUDINARY_CLOUD_NAME = env.CLOUDINARY_CLOUD_NAME
+      CLOUDINARY_API_KEY = env.CLOUDINARY_API_KEY
+      CLOUDINARY_API_SECRET = env.CLOUDINARY_API_SECRET
+      CLOUDINARY_FOLDER_NAME = env.CLOUDINARY_FOLDER_NAME
+      SECRET_JWT = env.SECRET_JWT
+    }
+
     stages {
         stage('Hello') {
             steps {
@@ -13,13 +22,12 @@ pipeline {
         stage('Print Environment Variables') {
             steps {
                 script {
-                    // Access specific environment variables
-                    def varName = env.DATABASE_URL
-                   
-
-                    // Print the values of environment variables
-                    echo "VAR_NAME: ${varName}"
-                   
+                    echo "VAR_NAME: ${DATABASE_URL}"
+                    echo "VAR_NAME: ${CLOUDINARY_CLOUD_NAME}"
+                    echo "VAR_NAME: ${CLOUDINARY_API_KEY}"
+                    echo "VAR_NAME: ${CLOUDINARY_API_SECRET}"
+                    echo "VAR_NAME: ${CLOUDINARY_FOLDER_NAME}"
+                    echo "VAR_NAME: ${SECRET_JWT}"
 
                 }
             }
