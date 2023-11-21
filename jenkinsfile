@@ -30,13 +30,15 @@ pipeline {
             }
         }
 
-         post {
+        
+    }
+
+     post {
           always {
               // Clean up: stop and remove containers
               script {
                   sh 'docker-compose down'
               }
           }
-        }
     }
 }
