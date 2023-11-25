@@ -1,3 +1,4 @@
+import { removeAfterLastDot } from './../utils/index'
 import { UploadApiResponse, v2 as cloudinary } from 'cloudinary'
 import {
   CLOUDINARY_API_KEY,
@@ -9,6 +10,8 @@ import streamifier from 'streamifier'
 import path from 'path'
 import { uniqueId } from 'lodash'
 
+export const KEY_SLIPT_FILE = '__key__'
+
 cloudinary.config({
   cloud_name: CLOUDINARY_CLOUD_NAME,
   api_key: CLOUDINARY_API_KEY,
@@ -16,12 +19,17 @@ cloudinary.config({
 })
 
 export const uploadToCloudinary = (file: Express.Multer.File) => {
+  file.originalname = removeAfterLastDot(file.originalname)
   return new Promise<UploadApiResponse>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: CLOUDINARY_FOLDER_NAME,
         resource_type: 'raw',
-        filename_override: uniqueId() + path.extname(file.originalname),
+        filename_override:
+          file.originalname +
+          KEY_SLIPT_FILE +
+          uniqueId() +
+          path.extname(file.originalname),
         use_filename: true
       },
       (error, result) => {

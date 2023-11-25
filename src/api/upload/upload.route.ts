@@ -1,6 +1,4 @@
 import { Router } from 'express'
-import { uniqueId } from 'lodash'
-import path from 'path'
 import { deleteImagesUpload, uploadToCloudinary } from '~/config/cloudinaty'
 import upload from '~/config/multer'
 
@@ -11,11 +9,6 @@ router.post('/', upload.single('file'), async (req, res) => {
     if (!req.file) {
       throw new Error('no file upload')
     }
-
-    req.file.originalname = uniqueId() + path.extname(req.file.originalname)
-
-    // const b64 = Buffer.from(req.file.buffer).toString('base64')
-    // const dataURI = 'data:' + req.file.mimetype + ';base64,' + b64
 
     const result = await uploadToCloudinary(req.file)
 
