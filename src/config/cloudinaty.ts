@@ -19,14 +19,13 @@ cloudinary.config({
 })
 
 export const uploadToCloudinary = (file: Express.Multer.File) => {
-  file.originalname = removeAfterLastDot(file.originalname)
   return new Promise<UploadApiResponse>((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(
       {
         folder: CLOUDINARY_FOLDER_NAME,
         resource_type: 'raw',
         filename_override:
-          file.originalname +
+          removeAfterLastDot(file.originalname) +
           KEY_SLIPT_FILE +
           uniqueId() +
           path.extname(file.originalname),
